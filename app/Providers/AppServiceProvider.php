@@ -4,6 +4,18 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use App\Repositories\Contracts\CategoryRepositoryInterface;
+use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Repositories\Contracts\SupplierRepositoryInterface;
+use App\Repositories\Contracts\StockTransactionRepositoryInterface;
+use App\Repositories\Contracts\StockOpnameRepositoryInterface;
+
+use App\Repositories\Eloquent\CategoryRepository;
+use App\Repositories\Eloquent\ProductRepository;
+use App\Repositories\Eloquent\SupplierRepository;
+use App\Repositories\Eloquent\StockTransactionRepository;
+use App\Repositories\Eloquent\StockOpnameRepository;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -11,7 +23,30 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            CategoryRepositoryInterface::class,
+            CategoryRepository::class
+        );
+
+        $this->app->bind(
+            ProductRepositoryInterface::class,
+            ProductRepository::class
+        );
+
+        $this->app->bind(
+            SupplierRepositoryInterface::class,
+            SupplierRepository::class
+        );
+
+        $this->app->bind(
+            StockTransactionRepositoryInterface::class,
+            StockTransactionRepository::class
+        );
+
+        $this->app->bind(
+            StockOpnameRepositoryInterface::class,
+            StockOpnameRepository::class
+        );
     }
 
     /**
