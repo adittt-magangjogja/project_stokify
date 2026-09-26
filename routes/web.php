@@ -6,21 +6,81 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
+
+// ===============================
+// PRACTICE
+// ===============================
+
 Route::name('index-practice')->get('/', function () {
     return view('pages.practice.index');
 });
 
 Route::name('practice.')->group(function () {
+
     Route::name('first')->get('practice/1', function () {
         return view('pages.practice.1');
     });
+
     Route::name('second')->get('practice/2', function () {
         return view('pages.practice.2');
     });
+
 });
+
+
+// ===============================
+// AUTH
+// ===============================
+
+Route::get('/login', function () {
+    return view('login');
+});
+
+Route::get('/register', function () {
+    return view('register');
+});
+
+
+// ===============================
+// DASHBOARD
+// ===============================
+
+Route::view('/dashboard', 'pages.dashboard')
+    ->name('dashboard');
+
+
+// ===============================
+// MASTER DATA
+// ===============================
+
+Route::view('/produk', 'pages.produk')
+    ->name('produk.index');
+
+Route::view('/kategori', 'pages.kategori')
+    ->name('kategori.index');
+
+Route::view('/supplier', 'pages.supplier')
+    ->name('supplier.index');
+
+
+// ===============================
+// STOK
+// ===============================
+
+Route::view('/stok/masuk', 'pages.stok-masuk')
+    ->name('stok.masuk');
+
+Route::view('/stok/keluar', 'pages.stok-keluar')
+    ->name('stok.keluar');
+
+Route::view('/stok/opname', 'pages.stok-opname')
+    ->name('stok.opname');
+
+
+// ===============================
+// LAPORAN
+// ===============================
+
+Route::view('/laporan', 'pages.laporan')
+    ->name('laporan');
