@@ -2,25 +2,23 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-Route::name('index-practice')->get('/', function () {
+// 1. Route halaman utama (index)
+Route::get('/', function () {
     return view('pages.practice.index');
+})->name('index-practice');
+
+// 2. Route group untuk practice
+Route::name('practice.')->prefix('practice')->group(function () {
+    Route::get('/1', function () {
+        return view('pages.practice.1');
+    })->name('first');
+
+    Route::get('/2', function () {
+        return view('pages.practice.2');
+    })->name('second');
 });
 
-Route::name('practice.')->group(function () {
-    Route::name('first')->get('practice/1', function () {
-        return view('pages.practice.1');
-    });
-    Route::name('second')->get('practice/2', function () {
-        return view('pages.practice.2');
-    });
-});
+// 3. Route login (lengkap dengan nama 'login')
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
