@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,8 @@ Route::name('practice.')->group(function () {
     Route::name('second')->get('practice/2', function () {
         return view('pages.practice.2');
     });
+});
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('categories', CategoryController::class);
 });
