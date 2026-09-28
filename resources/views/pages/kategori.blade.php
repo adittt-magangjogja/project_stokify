@@ -32,10 +32,10 @@
                 </p>
             </div>
 
-            {{-- Tambah --}}
-            <button
-                type="button"
-                class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700">
+
+            {{-- Tombol Tambah Kategori --}}
+            <a href="{{ route('kategori.create') }}"
+               class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700">
 
                 <svg class="w-5 h-5 mr-2"
                      fill="none"
@@ -51,7 +51,8 @@
                 </svg>
 
                 Tambah Kategori
-            </button>
+
+            </a>
 
         </div>
 
@@ -147,17 +148,22 @@
 
                             <div class="flex justify-center gap-2">
 
+                                {{-- Detail --}}
                                 <button
+                                    type="button"
                                     class="px-3 py-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300">
                                     Detail
                                 </button>
 
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
+                                {{-- Edit --}}
+                                <a href="{{ route('kategori.edit', 1) }}"
+                                   class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
                                     Edit
-                                </button>
+                                </a>
 
+                                {{-- Hapus --}}
                                 <button
+                                    type="button"
                                     class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
                                     Hapus
                                 </button>
@@ -192,17 +198,22 @@
 
                             <div class="flex justify-center gap-2">
 
+                                {{-- Detail --}}
                                 <button
+                                    type="button"
                                     class="px-3 py-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300">
                                     Detail
                                 </button>
 
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
+                                {{-- Edit --}}
+                                <a href="{{ route('kategori.edit', 2) }}"
+                                   class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
                                     Edit
-                                </button>
+                                </a>
 
+                                {{-- Hapus --}}
                                 <button
+                                    type="button"
                                     class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
                                     Hapus
                                 </button>
@@ -237,17 +248,22 @@
 
                             <div class="flex justify-center gap-2">
 
+                                {{-- Detail --}}
                                 <button
+                                    type="button"
                                     class="px-3 py-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300">
                                     Detail
                                 </button>
 
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
+                                {{-- Edit --}}
+                                <a href="{{ route('kategori.edit', 3) }}"
+                                   class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
                                     Edit
-                                </button>
+                                </a>
 
+                                {{-- Hapus --}}
                                 <button
+                                    type="button"
                                     class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
                                     Hapus
                                 </button>
@@ -269,31 +285,40 @@
         <div class="flex flex-col items-center justify-between gap-4 p-5 md:flex-row">
 
             <span class="text-sm text-gray-500 dark:text-gray-400">
+
                 Menampilkan
+
                 <span class="font-semibold text-gray-900 dark:text-white">
                     1-3
                 </span>
+
                 dari
+
                 <span class="font-semibold text-gray-900 dark:text-white">
                     3
                 </span>
+
                 kategori
+
             </span>
 
 
             <div class="inline-flex">
 
                 <button
+                    type="button"
                     class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700">
                     Previous
                 </button>
 
                 <button
+                    type="button"
                     class="px-4 py-2 text-sm font-medium text-blue-600 bg-white border-t border-b border-gray-300 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-blue-400">
                     1
                 </button>
 
                 <button
+                    type="button"
                     class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700">
                     Next
                 </button>

@@ -53,16 +53,28 @@ Route::view('/dashboard', 'pages.dashboard')
 // ===============================
 // MASTER DATA
 // ===============================
-
 Route::view('/produk', 'pages.produk')
     ->name('produk.index');
+
+Route::view('/produk/tambah', 'pages.produk-create')
+    ->name('produk.create');
+
 
 Route::view('/kategori', 'pages.kategori')
     ->name('kategori.index');
 
+Route::view('/kategori/tambah', 'pages.kategori-create')
+    ->name('kategori.create');
+
+    Route::view('/kategori/{id}/edit', 'pages.kategori-edit')
+    ->name('kategori.edit');
+
+
 Route::view('/supplier', 'pages.supplier')
     ->name('supplier.index');
 
+Route::view('/supplier/tambah', 'pages.supplier-create')
+    ->name('supplier.create');
 
 // ===============================
 // STOK
