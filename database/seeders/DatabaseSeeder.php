@@ -2,21 +2,41 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\Role;
+use App\Models\ProductAttribute;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Menjalankan database seeder.
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // Membuat user default
+        foreach ([
+            ['Admin', 'admin@stockify.test', Role::ADMIN],
+            ['Manajer Gudang', 'manager@stockify.test', Role::MANAGER],
+            ['Staff Gudang', 'staff@stockify.test', Role::STAFF],
+        ] as [$name, $email, $role]) {
+            User::updateOrCreate(
+                ['email' => $email],
+                [
+                    'name' => $name,
+                    'password' => Hash::make('password'),
+                    'role' => $role,
+                    'is_active' => true,
+                ]
+            );
+        }
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Membuat atribut produk default
+        foreach (['Ukuran', 'Warna', 'Berat'] as $attr) {
+            ProductAttribute::firstOrCreate([
+                'name' => $attr,
+            ]);
+        }
     }
 }

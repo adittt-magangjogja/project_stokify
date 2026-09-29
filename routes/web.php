@@ -1,9 +1,21 @@
 <?php
 
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\CategoryController;
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RegisterController;
+
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\UserController;
+
+use App\Http\Controllers\Manager\StockTransactionController;
+use App\Http\Controllers\Manager\StockOpnameController;
+
+use App\Http\Controllers\Staff\ConfirmationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -11,195 +23,284 @@ use App\Http\Controllers\RegisterController;
 |--------------------------------------------------------------------------
 */
 
+
 // ===============================
-// PRACTICE
+// ROOT
 // ===============================
 
-Route::get('/', function () {
-    return view('login');
-});
-
-Route::name('practice.')->group(function () {
-
-    Route::name('first')->get('practice/1', function () {
-        return view('pages.practice.1');
-    });
-
-    Route::name('second')->get('practice/2', function () {
-        return view('pages.practice.2');
-    });
-
-});
-
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('categories', CategoryController::class);
-});
+Route::get('/', fn () => redirect()->route('login'));
 
 
 // ===============================
 // AUTH
 // ===============================
- 
 
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
+Route::middleware('guest')->group(function () {
 
-Route::get('/register', function () {
-    return view('register');
-})->name('register');
+    Route::get('/login', [AuthController::class, 'showLogin'])
+        ->name('login');
 
-Route::post('/register', [RegisterController::class, 'store'])
-->name('register.store');
+    Route::post('/login', [AuthController::class, 'login']);
 
+    Route::get('/register', function () {
+        return view('register');
+    })->name('register');
 
-// ===============================
-// DASHBOARD
-// ===============================
-
-Route::view('/dashboard', 'pages.dashboard')
-    ->name('dashboard');
-
-Route::view('/admin/dashboard', 'pages.dashboard-admin')
-    ->name('dashboard.admin');
-
-Route::view('/manager/dashboard', 'pages.dashboard-manager')
-    ->name('dashboard.manager');
-
-Route::view('/staff/dashboard', 'pages.dashboard-staff')
-    ->name('dashboard.staff');
-
-Route::view('/konfirmasi-pengeluaran', 'pages.konfirmasi-pengeluaran')
-    ->name('konfirmasi-pengeluaran');
-
-Route::view('/admin/dashboard', 'pages.dashboard-admin')
-    ->name('dashboard.admin');
+    Route::post('/register', [RegisterController::class, 'store'])
+        ->name('register.store');
+});
 
 
 // ===============================
-// MASTER DATA
-// ===============================
-Route::get('/produk', function () {
-    return view('pages.produk', [
-        'categories' => [],
-        'products' => new LengthAwarePaginator([], 0, 10),
-    ]);
-})->name('produk.index');
-
-Route::view('/produk/tambah', 'pages.produk-create')
-    ->name('produk.create');
-
- Route::view('/produk/{id}', 'pages.produk-detail')
-    ->name('produk.detail');
-
-Route::view('/produk/{id}/edit', 'pages.produk-edit')
-    ->name('produk.edit');
-
-
-Route::view('/kategori', 'pages.kategori')
-    ->name('kategori.index');
-
-Route::view('/kategori/tambah', 'pages.kategori-create')
-    ->name('kategori.create');
-
-    Route::view('/kategori/{id}/edit', 'pages.kategori-edit')
-    ->name('kategori.edit');
-
-
-Route::view('/supplier', 'pages.supplier')
-    ->name('supplier.index');
-
-Route::view('/supplier/tambah', 'pages.supplier-create')
-    ->name('supplier.create');
-
-Route::view('/supplier/{id}/edit', 'pages.supplier-edit')
-    ->name('supplier.edit');
-
-// ===============================
-// STOK
+// AUTHENTICATED USER
 // ===============================
 
-Route::view('/stok/masuk', 'pages.stok-masuk')
-    ->name('stok.masuk');
+Route::middleware('auth')->group(function () {
 
-Route::view('/stok/keluar', 'pages.stok-keluar')
-    ->name('stok.keluar');
+    // ===============================
+    // LOGOUT
+    // ===============================
 
-Route::view('/stok/opname', 'pages.stok-opname')
-    ->name('stok.opname');
-
-Route::view('/stok/masuk/tambah', 'pages.stok-masuk-create')
-    ->name('stok.masuk.create');
-
-Route::view('/stok/keluar/tambah', 'pages.stok-keluar-create')
-    ->name('stok.keluar.create');
-
-Route::view('/stok/opname/tambah', 'pages.stok-opname-create')
-    ->name('stok.opname.create');
-
-Route::view('/konfirmasi-barang', 'pages.konfirmasi-barang')
-    ->name('konfirmasi-barang');
-
-Route::view('/konfirmasi-pengeluaran', 'pages.konfirmasi-pengeluaran')
-    ->name('konfirmasi-pengeluaran');
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('logout');
 
 
-// ===============================
-// LAPORAN
-// ===============================
+    // ===============================
+    // DASHBOARD
+    // ===============================
 
-Route::view('/laporan', 'pages.laporan')
-    ->name('laporan');
-
-Route::view('/laporan/stok', 'pages.laporan-stok')
-    ->name('laporan.stok');
-
-Route::view('/laporan/transaksi', 'pages.laporan-transaksi')
-    ->name('laporan.transaksi');
-
-Route::view('/laporan/aktivitas', 'pages.laporan-aktivitas')
-    ->name('laporan.aktivitas');
+    // Dashboard otomatis memilih
+    // admin / manager / staff berdasarkan role
+    Route::get('/dashboard', DashboardController::class)
+        ->name('dashboard');
 
 
-// ===============================
-// PENGGUNA
-// ===============================
+    // ===============================
+    // DASHBOARD VIEW LAMA
+    // ===============================
 
-Route::view('/pengguna', 'pages.pengguna.index')
-    ->name('pengguna.index');
+    Route::view('/admin/dashboard', 'pages.dashboard-admin')
+        ->name('dashboard.admin');
 
-Route::view('/pengguna/tambah', 'pages.pengguna.create')
-    ->name('pengguna.create');
+    Route::view('/manager/dashboard', 'pages.dashboard-manager')
+        ->name('dashboard.manager');
 
-Route::view('/pengguna/{id}/edit', 'pages.pengguna.edit')
-    ->name('pengguna.edit');
+    Route::view('/staff/dashboard', 'pages.dashboard-staff')
+        ->name('dashboard.staff');
 
-// ===============================
-// ATRIBUT PRODUK
-// ===============================
 
-Route::view('/atribut-produk', 'pages.atribut-produk.index')
-    ->name('atribut-produk.index');
+    // ===============================
+    // MASTER DATA — PRODUK
+    // ===============================
 
-Route::view('/atribut-produk/tambah', 'pages.atribut-produk.create')
-    ->name('atribut-produk.create');
+    Route::middleware('role:admin,manager')->group(function () {
 
-Route::view('/atribut-produk/{id}/edit', 'pages.atribut-produk.edit')
-    ->name('atribut-produk.edit');
+        Route::get('/produk', [ProductController::class, 'index'])
+            ->name('produk.index');
 
-// ===============================
-// STAFF
-// ===============================
+        Route::get('/produk/tambah', [ProductController::class, 'create'])
+            ->name('produk.create');
 
-Route::view('/konfirmasi-barang', 'pages.konfirmasi-barang')
-    ->name('konfirmasi-barang');
+        Route::post('/produk', [ProductController::class, 'store'])
+            ->name('produk.store');
 
-// ===============================
-// PENGATURAN
-// ===============================
+        Route::get('/produk/{id}', [ProductController::class, 'show'])
+            ->name('produk.detail');
+    });
 
-Route::view('/pengaturan', 'pages.pengaturan')
-    ->name('pengaturan');
+    Route::middleware('role:admin')->group(function () {
+
+        Route::get('/produk/{id}/edit', [ProductController::class, 'edit'])
+            ->name('produk.edit');
+
+        Route::put('/produk/{id}', [ProductController::class, 'update'])
+            ->name('produk.update');
+
+        Route::delete('/produk/{id}', [ProductController::class, 'destroy'])
+            ->name('produk.destroy');
+    });
+
+
+    // ===============================
+    // KATEGORI
+    // ===============================
+
+    Route::middleware('role:admin')->group(function () {
+
+        Route::get('/kategori', [CategoryController::class, 'index'])
+            ->name('kategori.index');
+
+        Route::get('/kategori/tambah', [CategoryController::class, 'create'])
+            ->name('kategori.create');
+
+        Route::post('/kategori', [CategoryController::class, 'store'])
+            ->name('kategori.store');
+
+        Route::get('/kategori/{id}/edit', [CategoryController::class, 'edit'])
+            ->name('kategori.edit');
+
+        Route::put('/kategori/{id}', [CategoryController::class, 'update'])
+            ->name('kategori.update');
+
+        Route::delete('/kategori/{id}', [CategoryController::class, 'destroy'])
+            ->name('kategori.destroy');
+    });
+
+
+    // ===============================
+    // SUPPLIER
+    // Controller belum dibuat
+    // ===============================
+
+    Route::view('/supplier', 'pages.supplier')
+        ->name('supplier.index');
+
+    Route::view('/supplier/tambah', 'pages.supplier-create')
+        ->name('supplier.create');
+
+    Route::view('/supplier/{id}/edit', 'pages.supplier-edit')
+        ->name('supplier.edit');
+
+
+    // ===============================
+    // STOK
+    // Manajer input
+    // ===============================
+
+    Route::middleware('role:manager')->group(function () {
+
+        // Stok masuk
+        Route::get('/stok/masuk', [StockTransactionController::class, 'indexMasuk'])
+            ->name('stok.masuk');
+
+        Route::get('/stok/masuk/tambah', [StockTransactionController::class, 'createMasuk'])
+            ->name('stok.masuk.create');
+
+        Route::post('/stok/masuk', [StockTransactionController::class, 'storeMasuk'])
+            ->name('stok.masuk.store');
+
+
+        // Stok keluar
+        Route::get('/stok/keluar', [StockTransactionController::class, 'indexKeluar'])
+            ->name('stok.keluar');
+
+        Route::get('/stok/keluar/tambah', [StockTransactionController::class, 'createKeluar'])
+            ->name('stok.keluar.create');
+
+        Route::post('/stok/keluar', [StockTransactionController::class, 'storeKeluar'])
+            ->name('stok.keluar.store');
+
+
+        // Stock opname
+        Route::get('/stok/opname', [StockOpnameController::class, 'index'])
+            ->name('stok.opname');
+
+        Route::get('/stok/opname/tambah', [StockOpnameController::class, 'create'])
+            ->name('stok.opname.create');
+
+        Route::post('/stok/opname', [StockOpnameController::class, 'store'])
+            ->name('stok.opname.store');
+    });
+
+
+    // ===============================
+    // KONFIRMASI
+    // ===============================
+
+    Route::view('/konfirmasi-pengeluaran', 'pages.konfirmasi-pengeluaran')
+        ->name('konfirmasi-pengeluaran');
+
+
+    // ===============================
+    // LAPORAN
+    // Admin + Manajer
+    // ===============================
+
+    Route::middleware('role:admin,manager')->group(function () {
+
+        Route::get('/laporan', fn () => view('pages.laporan'))
+            ->name('laporan');
+
+        Route::get('/laporan/stok', [ReportController::class, 'stock'])
+            ->name('laporan.stok');
+
+        Route::get('/laporan/transaksi', [ReportController::class, 'transactions'])
+            ->name('laporan.transaksi');
+    });
+
+    Route::middleware('role:admin')->group(function () {
+
+        Route::get('/laporan/aktivitas', [ReportController::class, 'activities'])
+            ->name('laporan.aktivitas');
+    });
+
+
+    // ===============================
+    // PENGGUNA
+    // Admin
+    // ===============================
+
+    Route::middleware('role:admin')->group(function () {
+
+        Route::get('/pengguna', [UserController::class, 'index'])
+            ->name('pengguna.index');
+
+        Route::get('/pengguna/tambah', [UserController::class, 'create'])
+            ->name('pengguna.create');
+
+        Route::post('/pengguna', [UserController::class, 'store'])
+            ->name('pengguna.store');
+
+        Route::get('/pengguna/{user}/edit', [UserController::class, 'edit'])
+            ->name('pengguna.edit');
+
+        Route::put('/pengguna/{user}', [UserController::class, 'update'])
+            ->name('pengguna.update');
+
+        Route::delete('/pengguna/{user}', [UserController::class, 'destroy'])
+            ->name('pengguna.destroy');
+    });
+
+
+    // ===============================
+    // ATRIBUT PRODUK
+    // Controller belum dibuat
+    // ===============================
+
+    Route::view('/atribut-produk', 'pages.atribut-produk.index')
+        ->name('atribut-produk.index');
+
+    Route::view('/atribut-produk/tambah', 'pages.atribut-produk.create')
+        ->name('atribut-produk.create');
+
+    Route::view('/atribut-produk/{id}/edit', 'pages.atribut-produk.edit')
+        ->name('atribut-produk.edit');
+
+
+    // ===============================
+    // STAFF
+    // Konfirmasi barang
+    // ===============================
+
+    Route::middleware('role:staff')->group(function () {
+
+        Route::get('/konfirmasi-barang', [ConfirmationController::class, 'index'])
+            ->name('konfirmasi-barang');
+
+        Route::post('/konfirmasi-barang/{id}', [ConfirmationController::class, 'confirm'])
+            ->name('konfirmasi-barang.confirm');
+    });
+
+
+    // ===============================
+    // PENGATURAN
+    // Controller belum dibuat
+    // ===============================
+
+    Route::view('/pengaturan', 'pages.pengaturan')
+        ->name('pengaturan');
+});
+
 
 // ===============================
 // ERROR
