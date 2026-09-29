@@ -162,10 +162,11 @@
                                     Detail
                                 </button>
 
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
-                                    Edit
-                                </button>
+                                <a 
+                                       href="{{ route('supplier.edit', 1) }}" 
+                                     class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
+                                      Edit
+                                </a>
 
                                 <button
                                     class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
@@ -211,10 +212,11 @@
                                     Detail
                                 </button>
 
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
-                                    Edit
-                                </button>
+                              <a
+    href="{{ route('supplier.edit', 2) }}"
+    class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
+    Edit
+</a>
 
                                 <button
                                     class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
@@ -260,10 +262,11 @@
                                     Detail
                                 </button>
 
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
-                                    Edit
-                                </button>
+                               <a
+    href="{{ route('supplier.edit', 3) }}"
+    class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
+    Edit
+</a>
 
                                 <button
                                     class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
