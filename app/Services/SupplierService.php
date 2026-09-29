@@ -8,32 +8,33 @@ use Illuminate\Database\Eloquent\Collection;
 
 class SupplierService
 {
-    public function __construct(private readonly SupplierRepositoryInterface $suppliers)
-    {
+    public function __construct(
+        protected SupplierRepositoryInterface $supplierRepository
+    ) {
     }
 
     public function getAll(): Collection
     {
-        return $this->suppliers->all();
+        return $this->supplierRepository->all();
     }
 
     public function findById(int $id): ?Supplier
     {
-        return $this->suppliers->findById($id);
+        return $this->supplierRepository->findById($id);
     }
 
     public function create(array $data): Supplier
     {
-        return $this->suppliers->create($data);
+        return $this->supplierRepository->create($data);
     }
 
-    public function update(int $id, array $data): ?Supplier
+    public function update(Supplier $supplier, array $data): ?Supplier
     {
-        return $this->suppliers->update($id, $data);
+        return $this->supplierRepository->update($supplier->id, $data);
     }
 
-    public function delete(int $id): bool
+    public function delete(Supplier $supplier): bool
     {
-        return $this->suppliers->delete($id);
+        return $this->supplierRepository->delete($supplier->id);
     }
 }
