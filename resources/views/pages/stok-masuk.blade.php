@@ -94,7 +94,7 @@
 
 
         {{-- Table --}}
-        <div class="overflow-x-auto">
+        <div class="w-full">
 
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 
@@ -137,148 +137,7 @@
 
                 <tbody>
 
-                    {{-- Data 1 --}}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                        <td class="px-6 py-4">
-                            1
-                        </td>
-
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                            IN-001
-                        </td>
-
-                        <td class="px-6 py-4">
-                            25-09-2026
-                        </td>
-
-                        <td class="px-6 py-4">
-                            Laptop ASUS
-                        </td>
-
-                        <td class="px-6 py-4">
-                            PT Maju Jaya
-                        </td>
-
-                        <td class="px-6 py-4 font-semibold text-green-600">
-                            +10
-                        </td>
-
-                        <td class="px-6 py-4">
-
-                            <div class="flex justify-center gap-2">
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300">
-                                    Detail
-                                </button>
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
-                                    Hapus
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-
-                    {{-- Data 2 --}}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                        <td class="px-6 py-4">
-                            2
-                        </td>
-
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                            IN-002
-                        </td>
-
-                        <td class="px-6 py-4">
-                            24-09-2026
-                        </td>
-
-                        <td class="px-6 py-4">
-                            Mouse Logitech
-                        </td>
-
-                        <td class="px-6 py-4">
-                            CV Sumber Makmur
-                        </td>
-
-                        <td class="px-6 py-4 font-semibold text-green-600">
-                            +25
-                        </td>
-
-                        <td class="px-6 py-4">
-
-                            <div class="flex justify-center gap-2">
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300">
-                                    Detail
-                                </button>
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
-                                    Hapus
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-
-                    {{-- Data 3 --}}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                        <td class="px-6 py-4">
-                            3
-                        </td>
-
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                            IN-003
-                        </td>
-
-                        <td class="px-6 py-4">
-                            23-09-2026
-                        </td>
-
-                        <td class="px-6 py-4">
-                            Keyboard Mechanical
-                        </td>
-
-                        <td class="px-6 py-4">
-                            PT Teknologi Indonesia
-                        </td>
-
-                        <td class="px-6 py-4 font-semibold text-green-600">
-                            +15
-                        </td>
-
-                        <td class="px-6 py-4">
-
-                            <div class="flex justify-center gap-2">
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300">
-                                    Detail
-                                </button>
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
-                                    Hapus
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
+                 
 
                 </tbody>
 

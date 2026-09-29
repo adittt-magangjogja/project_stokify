@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="p-4 sm:ml-64">
+<div class="p-4">
     <div class="p-4 mt-14">
 
         {{-- Header --}}
@@ -78,31 +78,31 @@
 
                 <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-3 py-3">
                             No
                         </th>
 
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-3 py-3">
                             Kode Transaksi
                         </th>
 
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-3 py-3">
                             Tanggal
                         </th>
 
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-3 py-3">
                             Produk
                         </th>
 
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-3 py-3">
                             Tujuan
                         </th>
 
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-3 py-3">
                             Jumlah
                         </th>
 
-                        <th scope="col" class="px-6 py-3 text-center">
+                        <th scope="col" class="px-3 py-3 text-center">
                             Aksi
                         </th>
                     </tr>
@@ -110,143 +110,7 @@
 
                 <tbody>
 
-                    {{-- Data 1 --}}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                        <td class="px-6 py-4">
-                            1
-                        </td>
-
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                            OUT-001
-                        </td>
-
-                        <td class="px-6 py-4">
-                            25-09-2026
-                        </td>
-
-                        <td class="px-6 py-4">
-                            Laptop ASUS
-                        </td>
-
-                        <td class="px-6 py-4">
-                            Divisi IT
-                        </td>
-
-                        <td class="px-6 py-4">
-                            <span class="font-semibold text-red-600">
-                                -5
-                            </span>
-                        </td>
-
-                        <td class="px-6 py-4">
-                            <div class="flex justify-center gap-2">
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200">
-                                    Detail
-                                </button>
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200">
-                                    Hapus
-                                </button>
-
-                            </div>
-                        </td>
-                    </tr>
-
-                    {{-- Data 2 --}}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                        <td class="px-6 py-4">
-                            2
-                        </td>
-
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                            OUT-002
-                        </td>
-
-                        <td class="px-6 py-4">
-                            24-09-2026
-                        </td>
-
-                        <td class="px-6 py-4">
-                            Mouse Logitech
-                        </td>
-
-                        <td class="px-6 py-4">
-                            Divisi Marketing
-                        </td>
-
-                        <td class="px-6 py-4">
-                            <span class="font-semibold text-red-600">
-                                -10
-                            </span>
-                        </td>
-
-                        <td class="px-6 py-4">
-                            <div class="flex justify-center gap-2">
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200">
-                                    Detail
-                                </button>
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200">
-                                    Hapus
-                                </button>
-
-                            </div>
-                        </td>
-                    </tr>
-
-                    {{-- Data 3 --}}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                        <td class="px-6 py-4">
-                            3
-                        </td>
-
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                            OUT-003
-                        </td>
-
-                        <td class="px-6 py-4">
-                            23-09-2026
-                        </td>
-
-                        <td class="px-6 py-4">
-                            Keyboard Mechanical
-                        </td>
-
-                        <td class="px-6 py-4">
-                            Divisi Keuangan
-                        </td>
-
-                        <td class="px-6 py-4">
-                            <span class="font-semibold text-red-600">
-                                -3
-                            </span>
-                        </td>
-
-                        <td class="px-6 py-4">
-                            <div class="flex justify-center gap-2">
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200">
-                                    Detail
-                                </button>
-
-                                <button
-                                    class="px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200">
-                                    Hapus
-                                </button>
-
-                            </div>
-                        </td>
-                    </tr>
+                   
 
                 </tbody>
             </table>
