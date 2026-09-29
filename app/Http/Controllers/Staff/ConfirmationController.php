@@ -9,7 +9,7 @@ class ConfirmationController extends Controller
 {
     public function __construct(private StockTransactionService $service) {}
 
-    public function index() { return view('staff.confirmations.index', ['transactions' => $this->service->pending()]); }
+    public function index() { return view('pages.konfirmasi-barang', ['transactions' => $this->service->pending()]); }
 
     public function confirm(int $id)
     {

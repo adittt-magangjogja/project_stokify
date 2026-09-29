@@ -18,16 +18,17 @@ class CategoryController extends Controller
     {
         $categories = $this->categoryService->getAll();
 
-        return view('admin.categories.index', compact('categories'));
+        return view('pages.kategori', compact('categories'));
     }
 
     public function create()
     {
-        return view('admin.categories.create');
+        return view('pages.kategori-create');
     }
 
     public function store(Request $request)
     {
+        $request->merge(['name' => $request->input('name', $request->input('nama')), 'description' => $request->input('description', $request->input('deskripsi'))]);
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100', 'unique:categories,name'],
             'description' => ['nullable', 'string'],
@@ -36,17 +37,18 @@ class CategoryController extends Controller
         $this->categoryService->create($data);
 
         return redirect()
-            ->route('admin.categories.index')
+            ->route('kategori.index')
             ->with('success', 'Kategori berhasil ditambahkan.');
     }
 
     public function edit(Category $category)
     {
-        return view('admin.categories.edit', compact('category'));
+        return view('pages.kategori-edit', compact('category'));
     }
 
     public function update(Request $request, Category $category)
     {
+        $request->merge(['name' => $request->input('name', $request->input('nama')), 'description' => $request->input('description', $request->input('deskripsi'))]);
         $data = $request->validate([
             'name' => [
                 'required',
@@ -57,19 +59,23 @@ class CategoryController extends Controller
             'description' => ['nullable', 'string'],
         ]);
 
-        $this->categoryService->update($category->id, $data);
+        $this->categoryService->update($category, $data);
 
         return redirect()
-            ->route('admin.categories.index')
+            ->route('kategori.index')
             ->with('success', 'Kategori berhasil diperbarui.');
     }
 
     public function destroy(Category $category)
     {
-        $this->categoryService->delete($category->id);
+        if ($category->products()->exists()) {
+            return back()->with('error', 'Kategori masih digunakan produk. Pindahkan produk sebelum menghapus kategori.');
+        }
+
+        $this->categoryService->delete($category);
 
         return redirect()
-            ->route('admin.categories.index')
+            ->route('kategori.index')
             ->with('success', 'Kategori berhasil dihapus.');
     }
 }

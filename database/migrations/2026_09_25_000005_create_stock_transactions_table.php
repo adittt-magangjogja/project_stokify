@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('stock_transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->restrictOnDelete();
+            $table->foreignId('supplier_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('user_id')->constrained()->restrictOnDelete();
             $table->string('type', 20);
             $table->unsignedInteger('quantity');

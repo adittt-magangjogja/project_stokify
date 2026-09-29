@@ -14,7 +14,6 @@ return new class extends Migration
         });
 
         Schema::table('products', function (Blueprint $t) {
-            if (!Schema::hasColumn('products', 'min_stock')) $t->unsignedInteger('min_stock')->default(5);
             if (!Schema::hasColumn('products', 'image')) $t->string('image')->nullable();
         });
 
@@ -27,5 +26,15 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (Schema::hasColumn('stock_transactions', 'confirmed_by')) {
+            Schema::table('stock_transactions', fn (Blueprint $t) => $t->dropConstrainedForeignId('confirmed_by'));
+        }
+        Schema::table('stock_transactions', function (Blueprint $t) {
+            foreach (['confirmed_at', 'status'] as $column) {
+                if (Schema::hasColumn('stock_transactions', $column)) $t->dropColumn($column);
+            }
+        });
+        if (Schema::hasColumn('products', 'image')) Schema::table('products', fn (Blueprint $t) => $t->dropColumn('image'));
+        if (Schema::hasColumn('users', 'is_active')) Schema::table('users', fn (Blueprint $t) => $t->dropColumn('is_active'));
     }
 };

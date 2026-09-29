@@ -1,192 +1,21 @@
 @extends('layouts.dashboard')
-
 @section('content')
+<div class="mx-auto max-w-[1600px] space-y-5">
+    <section class="rounded-2xl bg-gradient-to-r from-white to-blue-50 px-6 py-6">
+        <p class="text-xs font-bold uppercase tracking-[0.17em] text-blue-600">Stockify / Manajer gudang</p>
+        <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-900">Halo, {{ auth()->user()->name }} <span aria-hidden="true">👋</span></h1>
+        <p class="mt-2 text-sm text-slate-500">Pantau pergerakan dan kondisi persediaan gudang hari ini.</p>
+    </section>
 
+    <section class="grid gap-4 md:grid-cols-3">
+        <article class="stat-card stat-card-green"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg></span><div><p class="text-sm text-emerald-800">Stok masuk hari ini</p><strong class="mt-1 block text-3xl font-bold text-emerald-950">{{ number_format($in_today) }}</strong><p class="mt-1 text-xs text-emerald-700">Transaksi tercatat</p></div></article>
+        <article class="stat-card stat-card-rose"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 21V9m0 0 4 4m-4-4-4 4m-4-8h16"/></svg></span><div><p class="text-sm text-rose-800">Stok keluar hari ini</p><strong class="mt-1 block text-3xl font-bold text-rose-950">{{ number_format($out_today) }}</strong><p class="mt-1 text-xs text-rose-700">Transaksi tercatat</p></div></article>
+        <article class="stat-card stat-card-blue"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M10.3 3.9 2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3l-7.5-13.1a2 2 0 0 0-3.4 0Z"/></svg></span><div><p class="text-sm text-blue-800">Produk stok rendah</p><strong class="mt-1 block text-3xl font-bold text-slate-900">{{ number_format($low_stock->count()) }}</strong><p class="mt-1 text-xs text-slate-500">Perlu diperiksa</p></div></article>
+    </section>
 
-<div class="p-4 lg:p-6">
-    <div class="p-4 mt-14">
-
-        {{-- Header --}}
-        <div class="mb-6">
-            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
-                Dashboard Manager
-            </h1>
-
-            <p class="text-gray-500 dark:text-gray-400 mt-1">
-                Ringkasan kondisi stok dan aktivitas gudang.
-            </p>
-        </div>
-
-
-        {{-- Summary Cards --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-
-            {{-- Stok Menipis --}}
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-
-                <div class="flex items-center justify-between">
-
-                    <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Stok Menipis
-                        </p>
-
-                        <h2 class="text-3xl font-bold text-red-600 mt-2">
-                            
-                        </h2>
-                    </div>
-
-                    <div class="p-3 bg-red-100 dark:bg-red-900/30 rounded-lg">
-
-                        <svg class="w-7 h-7 text-red-600"
-                             fill="none"
-                             stroke="currentColor"
-                             viewBox="0 0 24 24">
-
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z"/>
-
-                        </svg>
-
-                    </div>
-
-                </div>
-
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">
-                    Produk perlu segera diperiksa.
-                </p>
-
-            </div>
-
-
-            {{-- Barang Masuk Hari Ini --}}
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-
-                <div class="flex items-center justify-between">
-
-                    <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Barang Masuk Hari Ini
-                        </p>
-
-                        <h2 class="text-3xl font-bold text-green-600 mt-2">
-                            0
-                        </h2>
-                    </div>
-
-                    <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
-
-                        <svg class="w-7 h-7 text-green-600"
-                             fill="none"
-                             stroke="currentColor"
-                             viewBox="0 0 24 24">
-
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M12 4v16m8-8H4"/>
-
-                        </svg>
-
-                    </div>
-
-                </div>
-
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">
-                    Total barang yang masuk hari ini.
-                </p>
-
-            </div>
-
-
-            {{-- Barang Keluar Hari Ini --}}
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-
-                <div class="flex items-center justify-between">
-
-                    <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Barang Keluar Hari Ini
-                        </p>
-
-                        <h2 class="text-3xl font-bold text-orange-600 mt-2">
-                            0
-                        </h2>
-                    </div>
-
-                    <div class="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-
-                        <svg class="w-7 h-7 text-orange-600"
-                             fill="none"
-                             stroke="currentColor"
-                             viewBox="0 0 24 24">
-
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M5 12h14"/>
-
-                        </svg>
-
-                    </div>
-
-                </div>
-
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">
-                    Total barang yang keluar hari ini.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        {{-- Stok Menipis --}}
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
-
-            <div class="p-5 border-b border-gray-200 dark:border-gray-700">
-
-                <h2 class="text-lg font-semibold text-gray-800 dark:text-white">
-                    Produk dengan Stok Menipis
-                </h2>
-
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Produk yang perlu mendapat perhatian.
-                </p>
-
-            </div>
-
-
-            <div class="overflow-x-auto">
-
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-
-                    <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-400">
-
-                        <tr>
-                            <th class="px-6 py-3">Kode</th>
-                            <th class="px-6 py-3">Produk</th>
-                            <th class="px-6 py-3">Stok</th>
-                            <th class="px-6 py-3">Minimum</th>
-                            <th class="px-6 py-3">Status</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-                        
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
+    <section class="dashboard-card overflow-hidden p-0">
+        <div class="border-b border-slate-100 px-5 py-4 sm:px-6"><h2 class="font-bold text-slate-900">Perlu restock</h2><p class="mt-1 text-xs text-slate-500">Produk yang stoknya mencapai batas minimum.</p></div>
+        <div class="overflow-x-auto"><table class="w-full min-w-[560px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-6 py-3 font-semibold">Produk</th><th class="px-6 py-3 font-semibold">Stok tersedia</th><th class="px-6 py-3 font-semibold">Batas minimum</th><th class="px-6 py-3 font-semibold">Status</th></tr></thead><tbody class="divide-y divide-slate-100">@forelse($low_stock as $product)<tr class="hover:bg-slate-50"><td class="px-6 py-4 font-semibold text-slate-800">{{ $product->name }}</td><td class="px-6 py-4 text-slate-600">{{ number_format($product->stock) }}</td><td class="px-6 py-4 text-slate-600">{{ number_format($product->minimum_stock) }}</td><td class="px-6 py-4"><span class="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700">Perlu restock</span></td></tr>@empty<tr><td colspan="4" class="px-6 py-12 text-center"><p class="font-semibold text-slate-700">Stok aman</p><p class="mt-1 text-xs text-slate-500">Tidak ada produk yang perlu di-restock saat ini.</p></td></tr>@endforelse</tbody></table></div>
+    </section>
 </div>
-
 @endsection

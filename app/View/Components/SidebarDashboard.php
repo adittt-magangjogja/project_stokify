@@ -5,6 +5,7 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Illuminate\Support\Facades\DB;
 
 class SidebarDashboard extends Component
 {
@@ -21,6 +22,11 @@ class SidebarDashboard extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.sidebar-dashboard');
+        $settings = DB::table('settings')->pluck('value', 'key');
+
+        return view('components.sidebar-dashboard', [
+            'appName' => $settings['app_name'] ?? 'Stockify',
+            'appLogo' => $settings['app_logo'] ?? null,
+        ]);
     }
 }

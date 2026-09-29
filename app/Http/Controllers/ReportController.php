@@ -15,7 +15,12 @@ class ReportController extends Controller
 
     public function stock(Request $request)
     {
-        $data = $this->service->stock($request->only('category_id'));
+        $filters = $request->validate([
+            'category_id' => 'nullable|exists:categories,id',
+            'from' => 'nullable|date',
+            'to' => 'nullable|date|after_or_equal:from',
+        ]);
+        $data = $this->service->stock($filters);
         if ($request->query('export')) {
             return Excel::download(new StockReportExport($data), 'laporan-stok.xlsx');
         }

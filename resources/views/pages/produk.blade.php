@@ -40,14 +40,6 @@
 
             <div class="flex flex-col gap-2 sm:flex-row">
 
-                {{-- Tombol export Excel (tampil setelah route produk.export dibuat) --}}
-                @if (Route::has('produk.export'))
-                    <a href="{{ route('produk.export', request()->query()) }}"
-                       class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-green-700 bg-green-100 rounded-lg hover:bg-green-200 focus:ring-4 focus:ring-green-300 dark:bg-green-900 dark:text-green-300">
-                        Export Excel
-                    </a>
-                @endif
-
                 {{-- Tombol tambah --}}
                 <a href="{{ route('produk.create') }}"
                    class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700">
@@ -56,10 +48,22 @@
                     </svg>
                     Tambah Produk
                 </a>
+                @if (auth()->user()->role->value === 'Admin')
+                <a href="{{ route('produk.export') }}" class="rounded-lg bg-green-700 px-4 py-2 text-white">Export Excel</a>
+                @endif
 
             </div>
 
         </div>
+
+        @if (auth()->user()->role->value === 'Admin')
+        <form method="POST" action="{{ route('produk.import') }}" enctype="multipart/form-data" class="flex flex-wrap items-center gap-3 border-t p-5">
+            @csrf
+            <label class="text-sm font-medium">Import produk (.xlsx/.csv)<input required type="file" name="file" accept=".xlsx,.xls,.csv" class="ml-3 text-sm"></label>
+            <button class="rounded-lg bg-indigo-700 px-4 py-2 text-white">Import</button>
+            @error('file')<span class="text-sm text-red-600">{{ $message }}</span>@enderror
+        </form>
+        @endif
 
 
         {{-- Filter dan Search (dibungkus form GET supaya benar-benar terkirim) --}}
@@ -144,13 +148,13 @@
 
                             <td class="px-6 py-4">{{ $products->firstItem() + $loop->index }}</td>
 
-                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $product->sku }}</td>
+                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $product->code }}</td>
 
                             <td class="px-6 py-4">{{ $product->name }}</td>
 
                             <td class="px-6 py-4">{{ $product->category->name ?? '-' }}</td>
 
-                            <td class="px-6 py-4">Rp {{ number_format($product->selling_price, 0, ',', '.') }}</td>
+                            <td class="px-6 py-4">Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</td>
 
                             {{-- Catatan: ganti $product->stock jika nama field/atribut stok di backend berbeda --}}
                             @php
@@ -158,7 +162,7 @@
                             @endphp
 
                             <td class="px-6 py-4 font-semibold
-                                {{ $stock == 0 ? 'text-red-600' : ($stock <= $product->min_stock ? 'text-yellow-600' : '') }}">
+                                {{ $stock == 0 ? 'text-red-600' : ($stock <= $product->minimum_stock ? 'text-yellow-600' : '') }}">
                                 {{ $stock }}
                             </td>
 
@@ -167,7 +171,7 @@
                                     <span class="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded dark:bg-red-900 dark:text-red-300">
                                         Habis
                                     </span>
-                                @elseif ($stock <= $product->min_stock)
+                                @elseif ($stock <= $product->minimum_stock)
                                     <span class="px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-100 rounded dark:bg-yellow-900 dark:text-yellow-300">
                                         Stok Minimum
                                     </span>
@@ -187,7 +191,7 @@
                                         Detail
                                     </a>
 
-                                    {{-- Edit --}}
+                                    @if (auth()->user()->role->value === 'Admin')
                                     <a href="{{ route('produk.edit', $product->id) }}"
                                        class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
                                         Edit
@@ -201,7 +205,8 @@
                                     data-name="{{ $product->name }}"
                                     class="btn-delete px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
                                     Hapus
-                                </button>
+                                    </button>
+                                    @endif
 
                                 </div>
                             </td>

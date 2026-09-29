@@ -1,158 +1,31 @@
 @extends('layouts.dashboard')
-
 @section('content')
+<div class="mx-auto max-w-[1500px] space-y-5">
+    <section class="rounded-2xl bg-gradient-to-r from-white to-blue-50 px-6 py-6">
+        <p class="text-xs font-bold uppercase tracking-[0.17em] text-blue-600">Stockify / Staff gudang</p>
+        <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-900">Halo, {{ auth()->user()->name }} <span aria-hidden="true">👋</span></h1>
+        <p class="mt-2 text-sm text-slate-500">Berikut tugas konfirmasi yang perlu ditangani hari ini.</p>
+    </section>
 
-<div class="w-full p-4">
-    <div class="w-full p-4 mt-14">
-
-        {{-- Header --}}
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-                Dashboard Staff
-            </h1>
-
-            <p class="mt-2 text-gray-500 dark:text-gray-400">
-                Daftar tugas yang perlu diselesaikan.
-            </p>
-        </div>
-
-
-        {{-- Daftar Tugas --}}
-        <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-
-
-            {{-- Barang Masuk --}}
-            <div class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm
-                        dark:bg-gray-800 dark:border-gray-700">
-
-                <div class="flex items-start justify-between">
-
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                            Barang Masuk
-                        </h2>
-
-                        <p class="mt-2 text-gray-500 dark:text-gray-400">
-                            Barang masuk yang perlu diperiksa.
-                        </p>
-                    </div>
-
-                    <div class="p-3 bg-blue-100 rounded-lg dark:bg-blue-900">
-                        <svg class="w-7 h-7 text-blue-600 dark:text-blue-300"
-                             fill="none"
-                             stroke="currentColor"
-                             viewBox="0 0 24 24">
-
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M12 4v16m8-8H4"/>
-                        </svg>
-                    </div>
-
+    <section class="grid gap-4 xl:grid-cols-2">
+        @foreach(['Masuk' => $pending_in, 'Keluar' => $pending_out] as $type => $items)
+            <article class="dashboard-card overflow-hidden p-0">
+                <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6">
+                    <div><h2 class="font-bold text-slate-900">Konfirmasi barang {{ strtolower($type) }}</h2><p class="mt-1 text-xs text-slate-500">Periksa barang lalu konfirmasi penerimaan atau pengiriman.</p></div>
+                    <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">{{ $items->count() }} tugas</span>
                 </div>
-
-                <div class="mt-6">
-                    <span class="text-3xl font-bold text-gray-900 dark:text-white">
-                        0
-                    </span>
-
-                    <span class="ml-2 text-gray-500 dark:text-gray-400">
-                        barang perlu diperiksa
-                    </span>
+                <div class="divide-y divide-slate-100 px-5 sm:px-6">
+                    @forelse($items as $item)
+                        <div class="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div><p class="font-semibold text-slate-800">{{ $item->product->name }}</p><p class="mt-1 text-xs text-slate-500">{{ number_format($item->quantity) }} unit <span class="mx-1">·</span> {{ $item->transaction_date->format('d M Y') }}</p></div>
+                            <form method="POST" action="{{ route('konfirmasi-barang.confirm', $item->id) }}">@csrf<button class="rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-100">Konfirmasi</button></form>
+                        </div>
+                    @empty
+                        <div class="py-12 text-center"><p class="font-semibold text-slate-700">Tidak ada tugas tertunda</p><p class="mt-1 text-xs text-slate-500">Semua transaksi barang {{ strtolower($type) }} sudah diproses.</p></div>
+                    @endforelse
                 </div>
-
-                <div class="mt-6">
-                    <a href="{{ route('konfirmasi-barang') }}"
-                       class="inline-flex items-center px-4 py-2 text-sm font-medium
-                              text-white bg-blue-700 rounded-lg hover:bg-blue-800">
-
-                        Lihat Barang Masuk
-
-                        <svg class="w-4 h-4 ml-2"
-                             fill="none"
-                             stroke="currentColor"
-                             viewBox="0 0 24 24">
-
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M9 5l7 7-7 7"/>
-                        </svg>
-
-                    </a>
-                </div>
-
-            </div>
-
-
-            {{-- Barang Keluar --}}
-            <div class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm
-                        dark:bg-gray-800 dark:border-gray-700">
-
-                <div class="flex items-start justify-between">
-
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                            Barang Keluar
-                        </h2>
-
-                        <p class="mt-2 text-gray-500 dark:text-gray-400">
-                            Barang keluar yang perlu disiapkan.
-                        </p>
-                    </div>
-
-                    <div class="p-3 bg-red-100 rounded-lg dark:bg-red-900">
-                        <svg class="w-7 h-7 text-red-600 dark:text-red-300"
-                             fill="none"
-                             stroke="currentColor"
-                             viewBox="0 0 24 24">
-
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M5 12h14"/>
-                        </svg>
-                    </div>
-
-                </div>
-
-                <div class="mt-6">
-                    <span class="text-3xl font-bold text-gray-900 dark:text-white">
-                        0
-                    </span>
-
-                    <span class="ml-2 text-gray-500 dark:text-gray-400">
-                        barang perlu disiapkan
-                    </span>
-                </div>
-
-                <div class="mt-6">
-                    <a href="{{ route('konfirmasi-pengeluaran') }}"
-                       class="inline-flex items-center px-4 py-2 text-sm font-medium
-                              text-white bg-red-700 rounded-lg hover:bg-red-800">
-
-                        Lihat Barang Keluar
-
-                        <svg class="w-4 h-4 ml-2"
-                             fill="none"
-                             stroke="currentColor"
-                             viewBox="0 0 24 24">
-
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M9 5l7 7-7 7"/>
-                        </svg>
-
-                    </a>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+            </article>
+        @endforeach
+    </section>
 </div>
-
 @endsection

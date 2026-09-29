@@ -9,6 +9,10 @@ use Illuminate\Validation\Rules\Enum;
 
 class UserRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['is_active' => $this->boolean('is_active')]);
+    }
     /**
      * Menentukan apakah user diizinkan melakukan request.
      */
@@ -37,6 +41,7 @@ class UserRequest extends FormRequest
                 $id ? 'nullable' : 'required',
                 'string',
                 'min:8',
+                'confirmed',
             ],
 
             'role' => [

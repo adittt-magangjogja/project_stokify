@@ -1,5 +1,67 @@
 import ApexCharts from 'apexcharts';
 
+let stockOverviewChart = null;
+
+const renderStockOverviewChart = () => {
+	const element = document.getElementById('stock-overview-chart');
+
+	if (stockOverviewChart) {
+		stockOverviewChart.destroy();
+		stockOverviewChart = null;
+	}
+
+	if (!element) return;
+
+	const labels = JSON.parse(element.dataset.labels || '[]');
+	const values = JSON.parse(element.dataset.values || '[]').map(Number);
+
+	stockOverviewChart = new ApexCharts(element, {
+		series: [{ name: 'Jumlah stok', data: values }],
+		chart: {
+			type: 'bar',
+			height: 285,
+			fontFamily: 'Inter, sans-serif',
+			foreColor: '#64748b',
+			toolbar: { show: false },
+			animations: { enabled: true, easing: 'easeinout', speed: 650 },
+			redrawOnParentResize: true,
+		},
+		colors: ['#4f8cff'],
+		plotOptions: {
+			bar: { columnWidth: '46%', borderRadius: 7, borderRadiusApplication: 'end' },
+		},
+		fill: {
+			type: 'gradient',
+			gradient: { shade: 'light', type: 'vertical', shadeIntensity: 0.2, opacityFrom: 0.95, opacityTo: 0.62, stops: [0, 100] },
+		},
+		dataLabels: { enabled: false },
+		stroke: { show: true, width: 2, colors: ['transparent'] },
+		grid: { borderColor: '#edf1f7', strokeDashArray: 4, padding: { left: 8, right: 10 } },
+		xaxis: {
+			categories: labels,
+			axisBorder: { show: false },
+			axisTicks: { show: false },
+			labels: { rotate: -25, rotateAlways: labels.length > 5, trim: true, hideOverlappingLabels: true, style: { fontSize: '11px', fontWeight: 500 } },
+		},
+		yaxis: {
+			min: 0,
+			forceNiceScale: true,
+			labels: { formatter: (value) => Math.round(value).toLocaleString('id-ID'), style: { fontSize: '11px' } },
+		},
+		tooltip: {
+			 theme: 'light',
+			 y: { formatter: (value) => `${Number(value).toLocaleString('id-ID')} unit` },
+		},
+		states: { hover: { filter: { type: 'lighten', value: 0.06 } }, active: { filter: { type: 'none' } } },
+		noData: { text: 'Belum ada data stok' },
+	});
+
+	stockOverviewChart.render();
+};
+
+renderStockOverviewChart();
+document.addEventListener('stockify:page-loaded', renderStockOverviewChart);
+
 const getMainChartOptions = () => {
 	let mainChartColors = {}
 

@@ -11,13 +11,13 @@ class StockOpnameController extends Controller
 {
     public function __construct(private StockOpnameService $service) {}
 
-    public function index() { return view('manager.opname.index', ['opnames' => $this->service->list()]); }
+    public function index() { return view('pages.stok-opname', ['opnames' => $this->service->list()]); }
 
-    public function create() { return view('manager.opname.create', ['products' => Product::orderBy('name')->get()]); }
+    public function create() { return view('pages.stok-opname-create', ['products' => Product::orderBy('name')->get()]); }
 
     public function store(StockOpnameRequest $request)
     {
         $this->service->store($request->validated());
-        return redirect()->route('manager.opname.index')->with('success', 'Stock opname tersimpan.');
+        return redirect()->route('stok.opname')->with('success', 'Stock opname tersimpan.');
     }
 }

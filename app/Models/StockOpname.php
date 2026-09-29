@@ -16,6 +16,7 @@ class StockOpname extends Model
         'physical_stock',
         'difference',
         'opname_date',
+        'note',
     ];
 
     protected $casts = [

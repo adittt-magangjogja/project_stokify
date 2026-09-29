@@ -2,6 +2,85 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body { @apply bg-slate-100 text-slate-800 antialiased; }
+  h1, h2, h3, h4 { @apply tracking-tight text-slate-900; }
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+    @apply rounded-xl border-slate-300 bg-white text-slate-800 shadow-sm placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500;
+  }
+}
+
+@layer components {
+  .sidebar-section-label {
+    @apply px-3 pb-1 pt-5 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500;
+  }
+
+  .sidebar-link {
+    @apply flex items-center rounded-xl px-3 py-2.5 text-sm font-medium text-slate-300 transition duration-150 hover:bg-slate-800 hover:text-white;
+  }
+
+  .sidebar-link.is-active {
+    @apply bg-blue-600/15 text-blue-300 ring-1 ring-inset ring-blue-500/20;
+  }
+}
+
+@layer base {
+  table { @apply text-slate-700; }
+  th { @apply font-semibold; }
+}
+
+/* Stockify dashboard palette: soft blue, white, and a cool neutral canvas. */
+.dashboard-shell, .dashboard-shell #main-content { background-color: #f5f8fd; }
+.app-sidebar-panel { background: #fff; border-color: #e8edf5; box-shadow: 4px 0 18px rgb(36 67 112 / 3%); }
+.sidebar-section-label { color: #94a3b8; }
+.sidebar-link { color: #64748b; }
+.sidebar-link:hover { background: #f5f8ff; color: #2563eb; }
+.sidebar-link.is-active { background: #eef4ff; color: #2563eb; box-shadow: inset 3px 0 #3b82f6; }
+.sidebar-icon { width: 18px; height: 18px; margin-right: 12px; flex: none; color: #8a9bb6; }
+.sidebar-link.is-active .sidebar-icon, .sidebar-link:hover .sidebar-icon { color: #3b82f6; }
+.app-topbar { box-shadow: 0 1px 4px rgb(30 58 95 / 3%); }
+
+.stat-card { display: flex; min-height: 128px; align-items: center; gap: 15px; border: 1px solid transparent; border-radius: 16px; padding: 18px; box-shadow: 0 4px 14px rgb(39 73 128 / 3%); }
+.stat-card-blue { background: linear-gradient(125deg, #fff 0%, #f2f6ff 100%); border-color: #e0e9ff; }
+.stat-card-green { background: linear-gradient(125deg, #fff 0%, #effbf6 100%); border-color: #d9f3e7; }
+.stat-card-rose { background: linear-gradient(125deg, #fff 0%, #fff3f6 100%); border-color: #f8dfe7; }
+.stat-icon { display: flex; width: 52px; height: 52px; flex: none; align-items: center; justify-content: center; border: 2px solid rgb(255 255 255 / 90%); border-radius: 9999px; background: rgb(255 255 255 / 80%); box-shadow: 0 1px 4px rgb(30 58 95 / 5%); }
+.stat-icon svg { width: 25px; height: 25px; }
+.stat-card-blue .stat-icon { color: #3b82f6; }
+.stat-card-green .stat-icon { color: #10a66a; }
+.stat-card-rose .stat-icon { color: #ef476f; }
+.stat-arrow { display: flex; height: 30px; width: 30px; flex: none; align-items: center; justify-content: center; border-radius: 9999px; background: rgb(255 255 255 / 65%); color: #3b82f6; font-weight: 700; }
+.stat-card-green .stat-arrow { color: #10a66a; }
+.stat-card-rose .stat-arrow { color: #ef476f; }
+.dashboard-card { min-width: 0; border: 1px solid #e8edf5; border-radius: 16px; background: #fff; padding: 20px; box-shadow: 0 5px 18px rgb(39 73 128 / 4%); }
+.panel-icon { display: flex; width: 36px; height: 36px; flex: none; align-items: center; justify-content: center; border-radius: 9999px; background: #eef4ff; color: #3b82f6; }
+.panel-icon svg { width: 19px; height: 19px; }
+.navigation-progress { background: linear-gradient(90deg, #4f8cff, #9ec3ff); box-shadow: 0 0 12px rgb(59 130 246 / 30%); }
+.dashboard-shell #main-content main { transition: opacity 140ms ease; }
+.dashboard-shell #main-content.is-navigating main { opacity: .62; }
+.sidebar-collapsed #sidebar { display: none; }
+.sidebar-collapsed #main-content { margin-left: 0; }
+.sidebar-collapsed .app-topbar { left: 0; }
+
+@media (max-width: 1023px) {
+  .dashboard-shell #sidebar:not(.hidden) { display: flex; width: min(18rem, calc(100vw - 3rem)); }
+}
+
+.navigation-progress {
+  position: fixed;
+  inset: 0 auto auto 0;
+  z-index: 60;
+  height: 3px;
+  width: 0;
+  opacity: 0;
+  background: linear-gradient(90deg, #75a891, #b2d3bc);
+  box-shadow: 0 0 12px rgb(71 127 109 / 35%);
+  transition: width 180ms ease, opacity 180ms ease;
+}
+.navigation-progress.is-visible { width: 78%; opacity: 1; }
+.dashboard-shell #main-content main { transition: opacity 140ms ease; }
+.dashboard-shell #main-content.is-navigating main { opacity: .62; }
+
 /* styles.css atau app.css */
 @layer utilities {
     .text-primary-700 {

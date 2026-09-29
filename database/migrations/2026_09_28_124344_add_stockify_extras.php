@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        // Intentionally empty: additions are defined in add_stockify_extras.
     }
 
     /**
@@ -19,6 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        // Nothing to reverse.
     }
 };

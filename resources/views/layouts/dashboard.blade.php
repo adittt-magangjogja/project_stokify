@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="id">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +7,7 @@
     <meta name="author" content="#">
     <meta name="generator" content="Laravel">
 
-    <title>Dashboard - </title>
+    <title>{{ $appName ?? config('app.name', 'Stockify') }}</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
     <link rel="canonical" href="{{ request()->fullUrl() }}">
 
@@ -41,42 +41,21 @@
     <meta property="og:image" content="#">
     <meta property="og:image:type" content="image/png">
 
-    <script>
-        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
 </head>
 @php
     $whiteBg = isset($params['white_bg']) && $params['white_bg'];
 @endphp
-<body class="{{ $whiteBg ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800' }}">
+<body class="dashboard-shell min-h-screen bg-slate-100 font-sans text-slate-800 antialiased">
     
 <x-navbar-dashboard/>
+<div id="navigation-progress" class="navigation-progress" aria-hidden="true"></div>
 
-<div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
+<div class="min-h-screen bg-[#f5f8fd] pt-14">
 
-@if (request()->routeIs(
-    'dashboard.manager',
-    'produk.index',
-    'produk.detail',
-    'stok.masuk',
-    'stok.keluar',
-    'stok.opname',
-    'supplier.index',
-    'laporan.stok',
-    'laporan.transaksi'
-))
+@if (auth()->user()->role->value === 'Manajer Gudang')
     <x-sidebar.manager-sidebar/>
 
-@elseif (request()->routeIs(
-    'dashboard.staff',
-    'konfirmasi-barang',
-    'konfirmasi-pengeluaran'
-))
+@elseif (auth()->user()->role->value === 'Staff Gudang')
     <x-sidebar.staff-sidebar/>
 
 @else
@@ -84,9 +63,9 @@
 @endif
         
 
-    <div id="main-content" class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
+    <div id="main-content" class="relative min-h-[calc(100vh-3.5rem)] bg-[#f5f8fd] transition-[margin] duration-200 lg:ml-64">
 
-        <main>
+        <main class="min-h-[calc(100vh-10rem)] px-4 py-6 sm:px-6 lg:px-7">
             @yield('content')
         </main>
 
@@ -95,7 +74,5 @@
     </div>
 
 </div>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/datepicker.min.js"></script>
 </body>
 </html>

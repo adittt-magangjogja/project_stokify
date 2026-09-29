@@ -11,10 +11,11 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('product_id')->constrained()->restrictOnDelete();
             $table->foreignId('user_id')->constrained()->restrictOnDelete();
-            $table->integer('system_stock');
-            $table->integer('actual_stock');
+            $table->unsignedInteger('system_stock');
+            $table->unsignedInteger('physical_stock');
             $table->integer('difference');
             $table->text('note')->nullable();
+            $table->date('opname_date');
             $table->timestamps();
         });
     }

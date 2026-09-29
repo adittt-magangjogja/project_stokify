@@ -1,7 +1,19 @@
 @extends('layouts.dashboard')
-
 @section('content')
-<div class="p-4 lg:p-6">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Tambah Produk</h1>
-</div>
+<main class="mx-auto max-w-4xl p-6"><div class="mb-6"><h1 class="text-2xl font-bold">Tambah produk</h1><p class="mt-1 text-sm text-gray-500">Isi informasi produk, harga, stok awal, dan atributnya.</p></div>
+@if($errors->any())<div class="mb-5 rounded-lg bg-red-50 p-4 text-red-700">Periksa kembali data yang dimasukkan.</div>@endif
+<form method="POST" enctype="multipart/form-data" action="{{ route('produk.store') }}" class="grid gap-5 rounded-xl bg-white p-6 shadow-sm md:grid-cols-2">@csrf
+<label class="text-sm font-medium">Kode produk<input required name="code" value="{{ old('code') }}" class="mt-1 block w-full rounded-lg border p-2.5"></label>
+<label class="text-sm font-medium">Nama produk<input required name="name" value="{{ old('name') }}" class="mt-1 block w-full rounded-lg border p-2.5"></label>
+<label class="text-sm font-medium text-slate-700">Kategori<input required type="text" name="category_lookup" list="category-options" data-reference-input data-reference-target="category_id" data-reference-list="category-options" autocomplete="off" placeholder="Ketik atau pilih kategori" value="{{ old('category_lookup', optional($categories->firstWhere('id', old('category_id')))->name) }}" class="mt-1 block w-full rounded-xl border border-slate-300 p-2.5"><input type="hidden" name="category_id" id="category_id" value="{{ old('category_id') }}"><datalist id="category-options">@foreach($categories as $category)<option value="{{ $category->name }}" data-id="{{ $category->id }}"></option>@endforeach</datalist>@error('category_id')<span class="mt-1 block text-xs text-rose-600">Pilih kategori yang tersedia.</span>@enderror</label>
+<label class="text-sm font-medium text-slate-700">Supplier <span class="font-normal text-slate-400">(opsional)</span><input type="text" name="supplier_lookup" list="supplier-options" data-reference-input data-reference-target="supplier_id" data-reference-list="supplier-options" autocomplete="off" placeholder="Ketik atau pilih supplier" value="{{ old('supplier_lookup', optional($suppliers->firstWhere('id', old('supplier_id')))->name) }}" class="mt-1 block w-full rounded-xl border border-slate-300 p-2.5"><input type="hidden" name="supplier_id" id="supplier_id" value="{{ old('supplier_id') }}"><datalist id="supplier-options">@foreach($suppliers as $supplier)<option value="{{ $supplier->name }}" data-id="{{ $supplier->id }}"></option>@endforeach</datalist><span class="mt-1 block text-xs font-normal text-slate-400">Kosongkan jika produk tidak memiliki supplier.</span>@error('supplier_id')<span class="mt-1 block text-xs text-rose-600">Pilih supplier yang tersedia.</span>@enderror</label>
+<label class="text-sm font-medium">Satuan<input required name="unit" value="{{ old('unit') }}" placeholder="Pcs, Box, Kg" class="mt-1 block w-full rounded-lg border p-2.5"></label>
+<label class="text-sm font-medium">Stok awal<input type="number" min="0" name="stock" value="{{ old('stock',0) }}" class="mt-1 block w-full rounded-lg border p-2.5"></label>
+<label class="text-sm font-medium">Harga beli<input required type="number" min="0" step="0.01" name="purchase_price" value="{{ old('purchase_price') }}" class="mt-1 block w-full rounded-lg border p-2.5"></label>
+<label class="text-sm font-medium">Harga jual<input required type="number" min="0" step="0.01" name="selling_price" value="{{ old('selling_price') }}" class="mt-1 block w-full rounded-lg border p-2.5"></label>
+<label class="text-sm font-medium">Stok minimum<input required type="number" min="0" name="minimum_stock" value="{{ old('minimum_stock',5) }}" class="mt-1 block w-full rounded-lg border p-2.5"></label>
+<label class="text-sm font-medium">Gambar produk<input type="file" accept="image/*" name="image" class="mt-1 block w-full rounded-lg border p-2.5"></label>
+<label class="text-sm font-medium md:col-span-2">Deskripsi<textarea name="description" rows="3" class="mt-1 block w-full rounded-lg border p-2.5">{{ old('description') }}</textarea></label>
+@foreach($attributes as $attribute)<label class="text-sm font-medium">{{ $attribute->name }}<input name="attribute_values[{{ $attribute->id }}]" value="{{ old('attribute_values.'.$attribute->id) }}" class="mt-1 block w-full rounded-lg border p-2.5"></label>@endforeach
+<div class="flex gap-3 md:col-span-2"><button class="rounded-lg bg-blue-700 px-5 py-2.5 font-medium text-white">Simpan produk</button><a class="rounded-lg border px-5 py-2.5" href="{{ route('produk.index') }}">Batal</a></div></form></main>
 @endsection

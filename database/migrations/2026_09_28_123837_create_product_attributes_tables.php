@@ -8,23 +8,24 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('activity_logs', function (Blueprint $t) {
+        if (!Schema::hasTable('product_attributes')) Schema::create('product_attributes', function (Blueprint $t) {
             $t->id();
-            $t->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $t->string('action');
-            $t->text('description')->nullable();
-            $t->timestamp('created_at')->useCurrent();
+            $t->string('name')->unique();
+            $t->timestamps();
         });
-
-        Schema::create('settings', function (Blueprint $t) {
-            $t->string('key')->primary();
-            $t->text('value')->nullable();
+        if (!Schema::hasTable('product_attribute_values')) Schema::create('product_attribute_values', function (Blueprint $t) {
+            $t->id();
+            $t->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $t->foreignId('product_attribute_id')->constrained()->cascadeOnDelete();
+            $t->string('value');
+            $t->timestamps();
+            $t->unique(['product_id', 'product_attribute_id']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('settings');
-        Schema::dropIfExists('activity_logs');
+        Schema::dropIfExists('product_attribute_values');
+        Schema::dropIfExists('product_attributes');
     }
 };

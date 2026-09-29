@@ -16,16 +16,22 @@ class Product extends Model
         'supplier_id',
         'code',
         'name',
+        'description',
         'unit',
         'stock',
         'minimum_stock',
         'price',
+        'purchase_price',
+        'selling_price',
+        'image',
     ];
 
     protected $casts = [
         'stock' => 'integer',
         'minimum_stock' => 'integer',
         'price' => 'decimal:2',
+        'purchase_price' => 'decimal:2',
+        'selling_price' => 'decimal:2',
     ];
 
     public function category(): BelongsTo
@@ -46,5 +52,15 @@ class Product extends Model
     public function stockOpnames(): HasMany
     {
         return $this->hasMany(StockOpname::class);
+    }
+
+    public function attributeValues(): HasMany
+    {
+        return $this->hasMany(ProductAttributeValue::class);
+    }
+
+    public function scopeLowStock($query)
+    {
+        return $query->whereColumn('stock', '<=', 'minimum_stock');
     }
 }

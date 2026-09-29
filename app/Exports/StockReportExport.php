@@ -13,11 +13,11 @@ class StockReportExport implements FromCollection, WithHeadings, WithMapping
 
     public function headings(): array
     {
-        return ['SKU', 'Nama', 'Kategori', 'Stok', 'Stok Minimum'];
+        return ['Kode', 'Nama', 'Kategori', 'Stok pada tanggal', 'Masuk dalam periode', 'Keluar dalam periode', 'Stok Minimum'];
     }
 
     public function map($p): array
     {
-        return [$p->sku, $p->name, $p->category?->name, $p->stock, $p->min_stock];
+        return [$p->code, $p->name, $p->category?->name, $p->stock_at_date, $p->period_in, $p->period_out, $p->minimum_stock];
     }
 }

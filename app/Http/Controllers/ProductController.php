@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Exports\ProductsExport;
+use App\Imports\ProductsImport;
 use App\Models\Category;
 use App\Models\ProductAttribute;
 use App\Models\Supplier;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -28,6 +31,19 @@ class ProductController extends Controller
             'suppliers' => Supplier::all(),
             'attributes' => ProductAttribute::all(),
         ]);
+    }
+
+    public function export()
+    {
+        return Excel::download(new ProductsExport(), 'produk.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate(['file' => 'required|file|mimes:xlsx,xls,csv|max:10240']);
+        $import = new ProductsImport();
+        Excel::import($import, $request->file('file'));
+        return redirect()->route('produk.index')->with('success', $import->importedCount().' baris produk berhasil diimpor. Stok produk yang sudah terdaftar tidak ditimpa.');
     }
 
     public function store(ProductRequest $request)
@@ -59,7 +75,10 @@ class ProductController extends Controller
 
     public function destroy(int $id)
     {
-        $this->service->delete($id);
+        if (! $this->service->delete($id)) {
+            return redirect()->route('produk.index')->with('error', 'Produk memiliki riwayat stok dan tidak dapat dihapus.');
+        }
+
         return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus.');
     }
 }

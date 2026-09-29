@@ -14,23 +14,34 @@ class StockTransactionController extends Controller
 
     public function index(Request $request)
     {
-        return view('manager.transactions.index', [
-            'transactions' => $this->service->list($request->only('type', 'from', 'to')),
+        $type = $request->routeIs('stok.masuk*') ? 'in' : 'out';
+        return view($type === 'in' ? 'pages.stok-masuk' : 'pages.stok-keluar', [
+            'transactions' => $this->service->list(['type' => $type]),
         ]);
     }
 
-    public function create()
+    public function create(string $type = 'in')
     {
-        return view('manager.transactions.create', [
+        return view($type === 'in' ? 'pages.stok-masuk-create' : 'pages.stok-keluar-create', [
             'products' => Product::orderBy('name')->get(),
             'suppliers' => Supplier::orderBy('name')->get(),
+            'type' => $type,
         ]);
     }
 
-    public function store(StockTransactionRequest $request)
+    public function indexMasuk(Request $request) { return $this->index($request); }
+    public function indexKeluar(Request $request) { return $this->index($request); }
+    public function createMasuk() { return $this->create('in'); }
+    public function createKeluar() { return $this->create('out'); }
+    public function storeMasuk(StockTransactionRequest $request) { return $this->store($request, 'in'); }
+    public function storeKeluar(StockTransactionRequest $request) { return $this->store($request, 'out'); }
+
+    public function store(StockTransactionRequest $request, ?string $type = null)
     {
-        $this->service->create($request->validated());
-        return redirect()->route('manager.transactions.index')
+        $data = $request->validated();
+        if ($type) $data['type'] = $type;
+        $this->service->create($data);
+        return redirect()->route(($type ?? $data['type']) === 'in' ? 'stok.masuk' : 'stok.keluar')
             ->with('success', 'Transaksi dicatat, menunggu konfirmasi staff gudang.');
     }
 }
