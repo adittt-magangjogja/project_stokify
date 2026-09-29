@@ -30,7 +30,7 @@
                     </p>
 
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-                        120
+                        0
                     </h2>
                 </div>
 
@@ -71,7 +71,7 @@
                     </p>
 
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-                        250
+                        0
                     </h2>
                 </div>
 
@@ -112,7 +112,7 @@
                     </p>
 
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-                        180
+                        0
                     </h2>
                 </div>
 
@@ -153,7 +153,7 @@
                     </p>
 
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-                        8
+                        0
                     </h2>
                 </div>
 
@@ -241,73 +241,6 @@
 
                     <tbody>
 
-                        <tr class="border-b dark:border-gray-700">
-
-                            <td class="px-5 py-4 font-medium text-gray-900 dark:text-white">
-                                Laptop ASUS
-                            </td>
-
-                            <td class="px-5 py-4">
-                                3
-                            </td>
-
-                            <td class="px-5 py-4">
-                                10
-                            </td>
-
-                            <td class="px-5 py-4">
-                                <span class="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded dark:bg-red-900 dark:text-red-300">
-                                    Rendah
-                                </span>
-                            </td>
-
-                        </tr>
-
-
-                        <tr class="border-b dark:border-gray-700">
-
-                            <td class="px-5 py-4 font-medium text-gray-900 dark:text-white">
-                                Mouse Logitech
-                            </td>
-
-                            <td class="px-5 py-4">
-                                5
-                            </td>
-
-                            <td class="px-5 py-4">
-                                15
-                            </td>
-
-                            <td class="px-5 py-4">
-                                <span class="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded dark:bg-red-900 dark:text-red-300">
-                                    Rendah
-                                </span>
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td class="px-5 py-4 font-medium text-gray-900 dark:text-white">
-                                Keyboard
-                            </td>
-
-                            <td class="px-5 py-4">
-                                7
-                            </td>
-
-                            <td class="px-5 py-4">
-                                10
-                            </td>
-
-                            <td class="px-5 py-4">
-                                <span class="px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-100 rounded dark:bg-yellow-900 dark:text-yellow-300">
-                                    Menipis
-                                </span>
-                            </td>
-
-                        </tr>
 
                     </tbody>
 
@@ -357,17 +290,7 @@
 
                         </span>
 
-                        <h4 class="font-semibold text-gray-900 dark:text-white">
-                            Stok Masuk
-                        </h4>
-
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Laptop ASUS sebanyak 10 unit telah masuk.
-                        </p>
-
-                        <span class="text-xs text-gray-400">
-                            10 menit yang lalu
-                        </span>
+                        
 
                     </li>
 
@@ -391,16 +314,7 @@
 
                         </span>
 
-                        <h4 class="font-semibold text-gray-900 dark:text-white">
-                            Stok Keluar
-                        </h4>
-
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Mouse Logitech sebanyak 5 unit keluar.
-                        </p>
-
-                        <span class="text-xs text-gray-400">
-                            30 menit yang lalu
+                       
                         </span>
 
                     </li>
@@ -425,16 +339,8 @@
 
                         </span>
 
-                        <h4 class="font-semibold text-gray-900 dark:text-white">
-                            Produk Ditambahkan
-                        </h4>
-
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Produk Keyboard baru telah ditambahkan.
-                        </p>
-
-                        <span class="text-xs text-gray-400">
-                            1 jam yang lalu
+                        
+                        
                         </span>
 
                     </li>

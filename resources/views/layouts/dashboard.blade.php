@@ -54,16 +54,47 @@
     $whiteBg = isset($params['white_bg']) && $params['white_bg'];
 @endphp
 <body class="{{ $whiteBg ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800' }}">
-    <x-navbar-dashboard/>
-    <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
-        <x-sidebar.admin-sidebar/>
-        <div id="main-content" class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
-            <main>
-                @yield('content')
-            </main>
-            <x-footer-dashboard/>
-        </div>
+    
+<x-navbar-dashboard/>
+
+<div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
+
+@if (request()->routeIs(
+    'dashboard.manager',
+    'produk.index',
+    'produk.detail',
+    'stok.masuk',
+    'stok.keluar',
+    'stok.opname',
+    'supplier.index',
+    'laporan.stok',
+    'laporan.transaksi'
+))
+    <x-sidebar.manager-sidebar/>
+
+@elseif (request()->routeIs(
+    'dashboard.staff',
+    'konfirmasi-barang',
+    'konfirmasi-pengeluaran'
+))
+    <x-sidebar.staff-sidebar/>
+
+@else
+    <x-sidebar.admin-sidebar/>
+@endif
+        
+
+    <div id="main-content" class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
+
+        <main>
+            @yield('content')
+        </main>
+
+        <x-footer-dashboard/>
+
     </div>
+
+</div>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/datepicker.min.js"></script>
 </body>

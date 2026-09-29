@@ -69,6 +69,12 @@ Route::view('/manager/dashboard', 'pages.dashboard-manager')
 Route::view('/staff/dashboard', 'pages.dashboard-staff')
     ->name('dashboard.staff');
 
+Route::view('/konfirmasi-pengeluaran', 'pages.konfirmasi-pengeluaran')
+    ->name('konfirmasi-pengeluaran');
+
+Route::view('/admin/dashboard', 'pages.dashboard-admin')
+    ->name('dashboard.admin');
+
 
 // ===============================
 // MASTER DATA
@@ -130,6 +136,12 @@ Route::view('/stok/keluar/tambah', 'pages.stok-keluar-create')
 
 Route::view('/stok/opname/tambah', 'pages.stok-opname-create')
     ->name('stok.opname.create');
+
+Route::view('/konfirmasi-barang', 'pages.konfirmasi-barang')
+    ->name('konfirmasi-barang');
+
+Route::view('/konfirmasi-pengeluaran', 'pages.konfirmasi-pengeluaran')
+    ->name('konfirmasi-pengeluaran');
 
 
 // ===============================
