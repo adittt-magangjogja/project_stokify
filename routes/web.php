@@ -3,6 +3,7 @@
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,14 +39,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
 // ===============================
 // AUTH
 // ===============================
+ 
 
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
 
 Route::get('/register', function () {
     return view('register');
-});
+})->name('register');
+
+Route::post('/register', [RegisterController::class, 'store'])
+->name('register.store');
 
 
 // ===============================
@@ -63,6 +68,12 @@ Route::view('/manager/dashboard', 'pages.dashboard-manager')
 
 Route::view('/staff/dashboard', 'pages.dashboard-staff')
     ->name('dashboard.staff');
+
+Route::view('/konfirmasi-pengeluaran', 'pages.konfirmasi-pengeluaran')
+    ->name('konfirmasi-pengeluaran');
+
+Route::view('/admin/dashboard', 'pages.dashboard-admin')
+    ->name('dashboard.admin');
 
 
 // ===============================
@@ -125,6 +136,12 @@ Route::view('/stok/keluar/tambah', 'pages.stok-keluar-create')
 
 Route::view('/stok/opname/tambah', 'pages.stok-opname-create')
     ->name('stok.opname.create');
+
+Route::view('/konfirmasi-barang', 'pages.konfirmasi-barang')
+    ->name('konfirmasi-barang');
+
+Route::view('/konfirmasi-pengeluaran', 'pages.konfirmasi-pengeluaran')
+    ->name('konfirmasi-pengeluaran');
 
 
 // ===============================
