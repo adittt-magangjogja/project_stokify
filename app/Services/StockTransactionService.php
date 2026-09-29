@@ -2,33 +2,67 @@
 
 namespace App\Services;
 
-use App\Models\StockTransaction;
-use App\Repositories\Contracts\StockTransactionRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\ActivityLog;
+use App\Repositories\Contracts\{ProductRepositoryInterface, StockTransactionRepositoryInterface};
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class StockTransactionService
 {
-    public function __construct(private readonly StockTransactionRepositoryInterface $stockTransactions)
+    public function __construct(
+        private StockTransactionRepositoryInterface $transactions,
+        private ProductRepositoryInterface $products,
+    ) {}
+
+    public function list(array $filters)
     {
+        return $this->transactions->paginate($filters);
     }
 
-    public function getAll(): Collection
+    public function pending()
     {
-        return $this->stockTransactions->getAll();
+        return $this->transactions->pending();
     }
 
-    public function findById(int $id): ?StockTransaction
+    // Dibuat Manajer -> status pending
+    public function create(array $data)
     {
-        return $this->stockTransactions->findById($id);
+        $data['user_id'] = auth()->id();
+        $data['status'] = 'pending';
+        $data['transaction_date'] ??= now()->toDateString();
+        if ($data['type'] === 'out') $data['supplier_id'] = null;
+
+        $trx = $this->transactions->create($data);
+        ActivityLog::record('create_transaction', "Transaksi {$trx->type} #{$trx->id} dibuat");
+
+        return $trx;
     }
 
-    public function create(array $data): StockTransaction
+    // Dikonfirmasi Staff -> stok berubah
+    public function confirm(int $id)
     {
-        return $this->stockTransactions->create($data);
-    }
+        return DB::transaction(function () use ($id) {
+            $trx = $this->transactions->findForUpdate($id);
 
-    public function delete(StockTransaction $stockTransaction): bool
-    {
-        return $this->stockTransactions->delete($stockTransaction);
+            if ($trx->status !== 'pending') {
+                throw ValidationException::withMessages(['transaction' => 'Transaksi sudah dikonfirmasi.']);
+            }
+
+            $product = $this->products->find($trx->product_id);
+            if ($trx->type === 'out' && $product->stock < $trx->quantity) {
+                throw ValidationException::withMessages(['quantity' => "Stok {$product->name} tidak cukup (tersisa {$product->stock})."]);
+            }
+
+            $this->products->adjustStock($trx->product_id, $trx->type === 'in' ? $trx->quantity : -$trx->quantity);
+
+            $trx = $this->transactions->update($trx, [
+                'status' => 'confirmed',
+                'confirmed_by' => auth()->id(),
+                'confirmed_at' => now(),
+            ]);
+            ActivityLog::record('confirm_transaction', "Transaksi {$trx->type} #{$trx->id} dikonfirmasi");
+
+            return $trx;
+        });
     }
 }

@@ -6,14 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+class ProductAttribute extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = [
+        'name',
+    ];
 
-    public function products(): HasMany
+    public function values(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(ProductAttributeValue::class, 'product_attribute_id');
     }
 }

@@ -2,19 +2,17 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\ProductRepositoryInterface;
 use App\Repositories\Contracts\SupplierRepositoryInterface;
 use App\Repositories\Contracts\StockTransactionRepositoryInterface;
 use App\Repositories\Contracts\StockOpnameRepositoryInterface;
-
 use App\Repositories\Eloquent\CategoryRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\SupplierRepository;
 use App\Repositories\Eloquent\StockTransactionRepository;
 use App\Repositories\Eloquent\StockOpnameRepository;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

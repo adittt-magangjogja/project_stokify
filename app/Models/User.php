@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'is_active',
     ];
 
     /**
@@ -40,8 +41,9 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
+        'role' => \App\Enums\Role::class,
+        'is_active' => 'boolean',
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
 
     /**
