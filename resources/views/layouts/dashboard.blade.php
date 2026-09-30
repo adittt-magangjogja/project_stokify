@@ -45,12 +45,12 @@
 @php
     $whiteBg = isset($params['white_bg']) && $params['white_bg'];
 @endphp
-<body class="dashboard-shell min-h-screen bg-slate-100 font-sans text-slate-800 antialiased">
+<body class="dashboard-shell min-h-screen bg-[#f4f7fc] font-sans text-slate-800 antialiased">
     
 <x-navbar-dashboard/>
 <div id="navigation-progress" class="navigation-progress" aria-hidden="true"></div>
 
-<div class="min-h-screen bg-[#f5f8fd] pt-14">
+<div class="min-h-screen bg-[#f4f7fc] pt-14">
 
 @if (auth()->user()->role->value === 'Manajer Gudang')
     <x-sidebar.manager-sidebar/>
@@ -63,7 +63,7 @@
 @endif
         
 
-    <div id="main-content" class="relative min-h-[calc(100vh-3.5rem)] bg-[#f5f8fd] transition-[margin] duration-200 lg:ml-64">
+    <div id="main-content" class="relative min-h-[calc(100vh-3.5rem)] bg-[#f4f7fc] transition-[margin] duration-200 lg:ml-64">
 
         <main class="min-h-[calc(100vh-10rem)] px-4 py-6 sm:px-6 lg:px-7">
             @yield('content')

@@ -15,6 +15,8 @@ class ProductRequest extends FormRequest
     {
         $categoryName = trim((string) $this->input('category_lookup', ''));
         $supplierName = trim((string) $this->input('supplier_lookup', ''));
+        $purchasePrice = preg_replace('/\D+/', '', (string) $this->input('purchase_price', ''));
+        $sellingPrice = preg_replace('/\D+/', '', (string) $this->input('selling_price', ''));
 
         $categoryId = $this->input('category_id');
         if ($categoryName !== '') {
@@ -33,6 +35,8 @@ class ProductRequest extends FormRequest
         $this->merge([
             'category_id' => $categoryId,
             'supplier_id' => $supplierId,
+            'purchase_price' => $purchasePrice,
+            'selling_price' => $sellingPrice,
         ]);
     }
 

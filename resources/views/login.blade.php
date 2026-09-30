@@ -1,227 +1,57 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Login - Stockify</title>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2055a0">
+    <title>Masuk · Stockify</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-
-<body class="bg-gray-100 dark:bg-gray-900">
-
-    <div class="min-h-screen flex items-center justify-center px-4">
-
-        <div class="w-full max-w-md">
-
-            {{-- Logo / Nama Aplikasi --}}
-            <div class="text-center mb-8">
-
-                <div class="flex justify-center mb-4">
-                    <div class="flex items-center justify-center w-16 h-16
-                    bg-blue-600 rounded-2xl shadow-lg">
-
-                        <svg class="w-9 h-9 text-white"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M20 7.5 12 3 4 7.5m16 0v9L12 21l-8-4.5v-9m16 0L12 12m0 9v-9m0 0L4 7.5" />
-
-                        </svg>
-
-                    </div>
-                </div>
-
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-                    Stockify
-                </h1>
-
-                <p class="text-gray-500 dark:text-gray-400 mt-2">
-                    Sistem Manajemen Stok Barang
-                </p>
-
+<body class="login-screen">
+    <main class="login-frame">
+        <section class="login-visual" aria-label="Stockify">
+            <div class="login-brand-lockup">
+                <span class="stockify-mark stockify-mark-large" aria-hidden="true">
+                    <svg viewBox="0 0 48 48" fill="none"><path d="m24 3 12 7-12 7-12-7 12-7Z" fill="#60A5FA"/><path d="m12 10 12 7v14l-12-7V10Z" fill="#3B82F6"/><path d="m36 10-12 7v14l12-7V10Z" fill="#2563EB"/><path d="m12 26 12 7-12 7-12-7 12-7Z" fill="#93C5FD"/><path d="m0 33 12 7v5L0 38v-5Z" fill="#60A5FA"/><path d="m24 33-12 7v5l12-7v-5Z" fill="#3B82F6"/><path d="m36 26 12 7-12 7-12-7 12-7Z" fill="#BFDBFE"/><path d="m24 33 12 7v5l-12-7v-5Z" fill="#60A5FA"/><path d="m48 33-12 7v5l12-7v-5Z" fill="#2563EB"/></svg>
+                </span>
+                <span class="login-brand-name">Stockify</span>
+                <span class="login-brand-tagline">Sistem Manajemen Stok Barang</span>
             </div>
+            <span class="login-visual-accent" aria-hidden="true"></span>
+        </section>
 
-
-            {{-- Card Login --}}
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sm:p-8">
-
-                <div class="mb-6">
-
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                        Selamat Datang
-                    </h2>
-
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                        Silakan masuk ke akun Anda
-                    </p>
-
+        <section class="login-panel">
+            <div class="login-form-wrap">
+                <div class="login-mobile-brand" aria-hidden="true">
+                    <span class="stockify-mark"><svg viewBox="0 0 48 48" fill="none"><path d="m24 3 12 7-12 7-12-7 12-7Z" fill="#60A5FA"/><path d="m12 10 12 7v14l-12-7V10Z" fill="#3B82F6"/><path d="m36 10-12 7v14l12-7V10Z" fill="#2563EB"/><path d="m12 26 12 7-12 7-12-7 12-7Z" fill="#93C5FD"/><path d="m0 33 12 7v5L0 38v-5Z" fill="#60A5FA"/><path d="m24 33-12 7v5l12-7v-5Z" fill="#3B82F6"/><path d="m36 26 12 7-12 7-12-7 12-7Z" fill="#BFDBFE"/><path d="m24 33 12 7v5l-12-7v-5Z" fill="#60A5FA"/><path d="m48 33-12 7v5l12-7v-5Z" fill="#2563EB"/></svg></span>
+                    <strong>Stockify</strong>
                 </div>
+                <span class="login-eyebrow">SELAMAT DATANG KEMBALI</span>
+                <h1>Masuk ke akun Anda</h1>
+                <p class="login-intro">Silakan login untuk melanjutkan ke sistem Stockify.</p>
 
+                @if($errors->any())
+                    <div class="login-alert" role="alert">{{ $errors->first() }}</div>
+                @endif
 
-                {{-- Form Login --}}
-                <form action="#" method="POST">
-
+                <form action="{{ route('login') }}" method="POST" class="login-form">
                     @csrf
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="Masukkan email Anda" autocomplete="username" required autofocus>
 
-                    {{-- Email --}}
-                    <div class="mb-5">
+                    <label for="password">Kata sandi</label>
+                    <input type="password" id="password" name="password" placeholder="Masukkan kata sandi" autocomplete="current-password" required>
 
-                        <label
-                            for="email"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-
-                            Email
-
-                        </label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="nama@email.com"
-                            required
-
-                            class="bg-gray-50 border border-gray-300
-                            text-gray-900 text-sm rounded-lg
-                            focus:ring-blue-500 focus:border-blue-500
-                            block w-full p-3
-                            dark:bg-gray-700
-                            dark:border-gray-600
-                            dark:placeholder-gray-400
-                            dark:text-white">
-
+                    <div class="login-options">
+                        <label class="login-remember"><input type="checkbox" name="remember" value="1"><span>Ingat saya</span></label>
                     </div>
-
-
-                    {{-- Password --}}
-                    <div class="mb-5">
-
-                        <div class="flex items-center justify-between mb-2">
-
-                            <label
-                                for="password"
-                                class="text-sm font-medium text-gray-900 dark:text-white">
-
-                                Password
-
-                            </label>
-
-                            <a
-                                href="#"
-                                class="text-sm text-blue-600 hover:underline
-                                dark:text-blue-500">
-
-                                Lupa password?
-
-                            </a>
-
-                        </div>
-
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Masukkan password"
-                            required
-
-                            class="bg-gray-50 border border-gray-300
-                            text-gray-900 text-sm rounded-lg
-                            focus:ring-blue-500 focus:border-blue-500
-                            block w-full p-3
-                            dark:bg-gray-700
-                            dark:border-gray-600
-                            dark:placeholder-gray-400
-                            dark:text-white">
-
-                    </div>
-
-
-                    {{-- Remember Me --}}
-                    <div class="flex items-center mb-6">
-
-                        <input
-                            id="remember"
-                            type="checkbox"
-                            class="w-4 h-4 text-blue-600
-                            bg-gray-100 border-gray-300 rounded
-                            focus:ring-blue-500
-                            dark:focus:ring-blue-600
-                            dark:ring-offset-gray-800
-                            dark:bg-gray-700
-                            dark:border-gray-600">
-
-                        <label
-                            for="remember"
-                            class="ms-2 text-sm text-gray-600 dark:text-gray-400">
-
-                            Ingat saya
-
-                        </label>
-
-                    </div>
-
-
-                    {{-- Button Login --}}
-                    <button
-                        type="submit"
-
-                        class="w-full text-white bg-blue-600
-                        hover:bg-blue-700 focus:ring-4
-                        focus:ring-blue-300 font-medium
-                        rounded-lg text-sm px-5 py-3
-                        text-center
-                        dark:bg-blue-600
-                        dark:hover:bg-blue-700
-                        dark:focus:ring-blue-800">
-
-                        Masuk
-
-                    </button>
-
+                    <button type="submit" class="login-submit">Masuk <span aria-hidden="true">→</span></button>
                 </form>
-
-
-                {{-- Register --}}
-                <div class="text-center mt-6">
-
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-
-                        Belum punya akun?
-
-                        <a
-                            href="/register"
-                            class="font-medium text-blue-600 hover:underline
-                            dark:text-blue-500">
-
-                            Daftar sekarang
-
-                        </a>
-
-                    </p>
-
-                </div>
-
             </div>
-
-
-            {{-- Footer --}}
-            <p class="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
-
-                © 2026 Stockify. All rights reserved.
-
-            </p>
-
-        </div>
-
-    </div>
-
+        </section>
+    </main>
 </body>
-
 </html>

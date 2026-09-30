@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="mx-auto max-w-[1600px] space-y-5">
-    <section class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-white via-white to-blue-50 px-6 py-6 sm:px-8">
+    <section class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-white via-white to-emerald-50 px-6 py-6 sm:px-8">
         <div class="relative z-10 flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
             <div class="max-w-2xl">
                 <p class="text-xs font-bold uppercase tracking-[0.17em] text-blue-600">Stockify / Admin</p>
@@ -13,10 +13,10 @@
                 <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 3v3m8-3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z"/></svg>
                 </span>
-                <span><strong class="block text-slate-800">{{ now()->locale('id')->translatedFormat('l, d F Y') }}</strong><span class="mt-0.5 block text-xs text-slate-500">{{ now()->format('H:i') }} WIB</span></span>
+                <span><strong id="dashboard-date" class="block text-slate-800">{{ now()->setTimezone('Asia/Jakarta')->locale('id')->translatedFormat('l, d F Y') }}</strong><time id="dashboard-time" class="mt-0.5 block text-xs text-slate-500" datetime="{{ now()->setTimezone('Asia/Jakarta')->toIso8601String() }}" data-timezone="Asia/Jakarta">{{ now()->setTimezone('Asia/Jakarta')->format('H:i') }} WIB</time></span>
             </div>
         </div>
-        <svg class="pointer-events-none absolute -right-3 -top-8 hidden h-48 w-64 text-blue-100/80 lg:block" viewBox="0 0 240 180" fill="none" aria-hidden="true">
+        <svg class="pointer-events-none absolute -right-3 -top-8 hidden h-48 w-64 text-emerald-100/80 lg:block" viewBox="0 0 240 180" fill="none" aria-hidden="true">
             <path d="M31 137h181v27H31z" fill="currentColor"/><path d="M55 137V74l67-42 67 42v63" stroke="currentColor" stroke-width="12" stroke-linejoin="round"/><path d="M99 137V96h46v41M70 91h20v20H70zm84 0h20v20h-20z" fill="currentColor"/><circle cx="35" cy="53" r="25" fill="currentColor" opacity=".35"/><circle cx="204" cy="45" r="34" fill="currentColor" opacity=".45"/>
         </svg>
     </section>

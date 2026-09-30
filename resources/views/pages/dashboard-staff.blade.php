@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 @section('content')
 <div class="mx-auto max-w-[1500px] space-y-5">
-    <section class="rounded-2xl bg-gradient-to-r from-white to-blue-50 px-6 py-6">
+    <section class="rounded-2xl bg-gradient-to-r from-white to-emerald-50 px-6 py-6">
         <p class="text-xs font-bold uppercase tracking-[0.17em] text-blue-600">Stockify / Staff gudang</p>
         <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-900">Halo, {{ auth()->user()->name }} <span aria-hidden="true">👋</span></h1>
         <p class="mt-2 text-sm text-slate-500">Berikut tugas konfirmasi yang perlu ditangani hari ini.</p>

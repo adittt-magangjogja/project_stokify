@@ -26,13 +26,13 @@ const renderStockOverviewChart = () => {
 			animations: { enabled: true, easing: 'easeinout', speed: 650 },
 			redrawOnParentResize: true,
 		},
-		colors: ['#4f8cff'],
+		colors: ['#3476e8'],
 		plotOptions: {
 			bar: { columnWidth: '46%', borderRadius: 7, borderRadiusApplication: 'end' },
 		},
 		fill: {
 			type: 'gradient',
-			gradient: { shade: 'light', type: 'vertical', shadeIntensity: 0.2, opacityFrom: 0.95, opacityTo: 0.62, stops: [0, 100] },
+			gradient: { shade: 'light', type: 'vertical', shadeIntensity: 0.2, opacityFrom: 0.95, opacityTo: 0.62, stops: [0, 100], gradientToColors: ['#a9c4ff'] },
 		},
 		dataLabels: { enabled: false },
 		stroke: { show: true, width: 2, colors: ['transparent'] },
