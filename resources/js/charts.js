@@ -62,6 +62,58 @@ const renderStockOverviewChart = () => {
 renderStockOverviewChart();
 document.addEventListener('stockify:page-loaded', renderStockOverviewChart);
 
+const renderStockFlowCharts = () => {
+	document.querySelectorAll('[data-stock-flow-chart]').forEach((element) => {
+		if (element.__stockFlowChart) {
+			element.__stockFlowChart.destroy();
+		}
+
+		const labels = JSON.parse(element.dataset.labels || '[]');
+		const incoming = JSON.parse(element.dataset.incoming || '[]').map(Number);
+		const outgoing = JSON.parse(element.dataset.outgoing || '[]').map(Number);
+		const chart = new ApexCharts(element, {
+			series: [
+				{ name: 'Stok masuk', data: incoming },
+				{ name: 'Stok keluar', data: outgoing },
+			],
+			chart: {
+				type: 'line',
+				height: 280,
+				fontFamily: 'Inter, sans-serif',
+				foreColor: '#64748b',
+				toolbar: { show: false },
+				animations: { enabled: true, easing: 'easeinout', speed: 600 },
+				redrawOnParentResize: true,
+			},
+			colors: ['#16a36a', '#ef4444'],
+			stroke: { curve: 'smooth', width: 3, lineCap: 'round' },
+			markers: { size: 0, hover: { size: 5, sizeOffset: 2 } },
+			dataLabels: { enabled: false },
+			grid: { borderColor: '#e8edf4', strokeDashArray: 4, padding: { left: 8, right: 12 } },
+			xaxis: {
+				categories: labels,
+				axisBorder: { color: '#d9e1ec' },
+				axisTicks: { show: false },
+				labels: { rotate: 0, hideOverlappingLabels: true, style: { fontSize: '11px' } },
+			},
+			yaxis: {
+				min: 0,
+				forceNiceScale: true,
+				labels: { formatter: (value) => Math.round(value).toLocaleString('id-ID'), style: { fontSize: '11px' } },
+			},
+			tooltip: { shared: true, intersect: false, y: { formatter: (value) => `${Number(value).toLocaleString('id-ID')} unit` } },
+			legend: { position: 'top', horizontalAlign: 'right', fontSize: '12px', markers: { radius: 8 } },
+			noData: { text: 'Belum ada transaksi terkonfirmasi' },
+		});
+
+		element.__stockFlowChart = chart;
+		chart.render();
+	});
+};
+
+renderStockFlowCharts();
+document.addEventListener('stockify:page-loaded', renderStockFlowCharts);
+
 const getMainChartOptions = () => {
 	let mainChartColors = {}
 

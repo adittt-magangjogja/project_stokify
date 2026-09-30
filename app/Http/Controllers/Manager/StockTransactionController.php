@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StockTransactionRequest;
 use App\Models\{Product, Supplier};
+use App\Models\StockTransaction;
 use App\Services\StockTransactionService;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 
 class StockTransactionController extends Controller
@@ -15,8 +17,31 @@ class StockTransactionController extends Controller
     public function index(Request $request)
     {
         $type = $request->routeIs('stok.masuk*') ? 'in' : 'out';
+        $from = now()->startOfDay()->subDays(13);
+        $to = now()->endOfDay();
+        $totals = StockTransaction::query()
+            ->where('status', 'confirmed')
+            ->whereBetween('transaction_date', [$from, $to])
+            ->selectRaw('DATE(transaction_date) as day, type, SUM(quantity) as total')
+            ->groupBy('day', 'type')
+            ->get()
+            ->mapWithKeys(fn ($row) => [$row->day.'_'.$row->type => (int) $row->total]);
+
+        $chartLabels = [];
+        $incomingValues = [];
+        $outgoingValues = [];
+        foreach (CarbonPeriod::create($from->toDateString(), $to->toDateString()) as $date) {
+            $day = $date->toDateString();
+            $chartLabels[] = $date->format('d/m');
+            $incomingValues[] = $totals->get($day.'_in', 0);
+            $outgoingValues[] = $totals->get($day.'_out', 0);
+        }
+
         return view($type === 'in' ? 'pages.stok-masuk' : 'pages.stok-keluar', [
             'transactions' => $this->service->list(['type' => $type]),
+            'chartLabels' => $chartLabels,
+            'incomingValues' => $incomingValues,
+            'outgoingValues' => $outgoingValues,
         ]);
     }
 
