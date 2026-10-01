@@ -48,6 +48,9 @@ class ProductsExport implements FromQuery, WithHeadings, WithMapping, ShouldAuto
         $lastRow = $sheet->getHighestRow();
         $sheet->freezePane('A2');
         $sheet->getStyle("A1:J{$lastRow}")->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+        $sheet->getStyle("A1:J{$lastRow}")->applyFromArray([
+            'borders' => ['allBorders' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, 'color' => ['rgb' => 'D5DFED']]],
+        ]);
         $sheet->getStyle('C:C')->getAlignment()->setWrapText(true);
 
         // Apply an explicit blue style so the table remains clearly formatted in Excel-compatible apps.
