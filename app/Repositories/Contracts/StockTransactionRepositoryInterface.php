@@ -27,4 +27,6 @@ interface StockTransactionRepositoryInterface
     public function getByType(string $type): Collection;
 
     public function getByStatus(string $status): Collection;
+
+    public function dailyConfirmedTotals($from, $to): \Illuminate\Support\Collection;
 }

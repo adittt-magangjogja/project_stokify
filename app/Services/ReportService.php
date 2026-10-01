@@ -2,26 +2,24 @@
 
 namespace App\Services;
 
-use App\Models\{ActivityLog, Product, StockOpname, StockTransaction};
+use App\Models\Product;
+use App\Repositories\Contracts\ReportRepositoryInterface;
 use Illuminate\Support\Carbon;
 
 class ReportService
 {
+    public function __construct(private ReportRepositoryInterface $reports) {}
+
     public function stock(array $f)
     {
         $to = Carbon::parse($f['to'] ?? today())->endOfDay();
         $from = Carbon::parse($f['from'] ?? $to->copy()->startOfMonth())->startOfDay();
-        $products = Product::with('category')
-            ->when($f['category_id'] ?? null, fn ($q, $c) => $q->where('category_id', $c))
-            ->whereDate('created_at', '<=', $to->toDateString())
-            ->orderBy('name')->get();
+        $products = $this->reports->productsForStock(isset($f['category_id']) ? (int) $f['category_id'] : null, $to);
 
         $ids = $products->modelKeys();
-        $futureTransactions = StockTransaction::whereIn('product_id', $ids)->where('status', 'confirmed')
-            ->where('transaction_date', '>', $to)->get(['product_id', 'type', 'quantity'])->groupBy('product_id');
-        $periodTransactions = StockTransaction::whereIn('product_id', $ids)->where('status', 'confirmed')
-            ->whereBetween('transaction_date', [$from, $to])->get(['product_id', 'type', 'quantity'])->groupBy('product_id');
-        $futureOpnames = StockOpname::whereIn('product_id', $ids)->whereDate('opname_date', '>', $to->toDateString())->get(['product_id', 'difference'])->groupBy('product_id');
+        $futureTransactions = $this->reports->confirmedTransactionsAfter($ids, $to);
+        $periodTransactions = $this->reports->confirmedTransactionsBetween($ids, $from, $to);
+        $futureOpnames = $this->reports->opnamesAfter($ids, $to);
 
         return $products->each(function (Product $product) use ($to, $futureTransactions, $futureOpnames, $periodTransactions) {
             $future = $futureTransactions->get($product->id, collect());
@@ -39,19 +37,11 @@ class ReportService
 
     public function transactions(array $f)
     {
-        return StockTransaction::with(['product', 'supplier', 'user'])
-            ->where('status', 'confirmed')
-            ->when($f['type'] ?? null, fn ($q, $t) => $q->where('type', $t))
-            ->when($f['from'] ?? null, fn ($q, $d) => $q->whereDate('transaction_date', '>=', $d))
-            ->when($f['to'] ?? null, fn ($q, $d) => $q->whereDate('transaction_date', '<=', $d))
-            ->latest('transaction_date')->get();
+        return $this->reports->transactions($f);
     }
 
     public function activities(array $f)
     {
-        return ActivityLog::with('user')
-            ->when($f['from'] ?? null, fn ($q, $d) => $q->whereDate('created_at', '>=', $d))
-            ->when($f['to'] ?? null, fn ($q, $d) => $q->whereDate('created_at', '<=', $d))
-            ->latest('created_at')->paginate(20);
+        return $this->reports->activities($f);
     }
 }

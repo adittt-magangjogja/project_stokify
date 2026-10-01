@@ -95,4 +95,19 @@ class ProductRepository implements ProductRepositoryInterface
         $product->stock += $qty;
         $product->save();
     }
+
+    public function hasStockHistory(int $id): bool
+    {
+        $product = Product::findOrFail($id);
+        return $product->stockTransactions()->exists() || $product->stockOpnames()->exists();
+    }
+
+    public function syncAttributes(int $id, array $values): void
+    {
+        $product = Product::findOrFail($id);
+        $product->attributeValues()->delete();
+        foreach ($values as $attributeId => $value) {
+            if (filled($value)) $product->attributeValues()->create(['product_attribute_id' => $attributeId, 'value' => $value]);
+        }
+    }
 }

@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Exports\ProductsExport;
 use App\Imports\ProductsImport;
-use App\Models\Category;
-use App\Models\ProductAttribute;
-use App\Models\Supplier;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,17 +17,13 @@ class ProductController extends Controller
     {
         return view('pages.produk', [
             'products' => $this->service->list($request->only('search', 'category_id')),
-            'categories' => Category::all(),
+            'categories' => $this->service->formOptions()['categories'],
         ]);
     }
 
     public function create()
     {
-        return view('pages.produk-create', [
-            'categories' => Category::all(),
-            'suppliers' => Supplier::all(),
-            'attributes' => ProductAttribute::all(),
-        ]);
+        return view('pages.produk-create', $this->service->formOptions());
     }
 
     public function export()
@@ -59,12 +52,9 @@ class ProductController extends Controller
 
     public function edit(int $id)
     {
-        return view('pages.produk-edit', [
+        return view('pages.produk-edit', array_merge([
             'product' => $this->service->find($id),
-            'categories' => Category::all(),
-            'suppliers' => Supplier::all(),
-            'attributes' => ProductAttribute::all(),
-        ]);
+        ], $this->service->formOptions()));
     }
 
     public function update(ProductRequest $request, int $id)

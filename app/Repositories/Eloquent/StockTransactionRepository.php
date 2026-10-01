@@ -100,4 +100,11 @@ class StockTransactionRepository implements StockTransactionRepositoryInterface
             ->latest('transaction_date')
             ->get();
     }
+
+    public function dailyConfirmedTotals($from, $to): \Illuminate\Support\Collection
+    {
+        return $this->model->where('status', 'confirmed')->whereBetween('transaction_date', [$from, $to])
+            ->selectRaw('DATE(transaction_date) as day, type, SUM(quantity) as total')
+            ->groupBy('day', 'type')->get()->mapWithKeys(fn ($row) => [$row->day . '_' . $row->type => (int) $row->total]);
+    }
 }

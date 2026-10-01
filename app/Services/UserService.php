@@ -2,18 +2,21 @@
 
 namespace App\Services;
 
-use App\Models\{ActivityLog, User};
+use App\Models\User;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public function list() { return User::latest()->paginate(10); }
+    public function __construct(private UserRepositoryInterface $users, private ActivityLogService $activity) {}
+
+    public function list() { return $this->users->paginate(); }
 
     public function store(array $data)
     {
         $data['password'] = Hash::make($data['password']);
-        $user = User::create($data);
-        ActivityLog::record('create_user', "Menambah user {$user->name}");
+        $user = $this->users->create($data);
+        $this->activity->record('create_user', "Menambah user {$user->name}");
         return $user;
     }
 
@@ -22,14 +25,14 @@ class UserService
         if (filled($data['password'] ?? null)) $data['password'] = Hash::make($data['password']);
         else unset($data['password']);
 
-        $user->update($data);
-        ActivityLog::record('update_user', "Mengubah user {$user->name}");
+        $this->users->update($user, $data);
+        $this->activity->record('update_user', "Mengubah user {$user->name}");
         return $user;
     }
 
     public function delete(User $user): void
     {
-        ActivityLog::record('delete_user', "Menghapus user {$user->name}");
-        $user->delete();
+        $this->activity->record('delete_user', "Menghapus user {$user->name}");
+        $this->users->delete($user);
     }
 }

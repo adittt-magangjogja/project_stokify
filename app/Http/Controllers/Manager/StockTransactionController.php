@@ -4,28 +4,21 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StockTransactionRequest;
-use App\Models\{Product, Supplier};
-use App\Models\StockTransaction;
 use App\Services\StockTransactionService;
+use App\Services\ProductService;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 
 class StockTransactionController extends Controller
 {
-    public function __construct(private StockTransactionService $service) {}
+    public function __construct(private StockTransactionService $service, private ProductService $catalog) {}
 
     public function index(Request $request)
     {
         $type = $request->routeIs('stok.masuk*') ? 'in' : 'out';
         $from = now()->startOfDay()->subDays(13);
         $to = now()->endOfDay();
-        $totals = StockTransaction::query()
-            ->where('status', 'confirmed')
-            ->whereBetween('transaction_date', [$from, $to])
-            ->selectRaw('DATE(transaction_date) as day, type, SUM(quantity) as total')
-            ->groupBy('day', 'type')
-            ->get()
-            ->mapWithKeys(fn ($row) => [$row->day.'_'.$row->type => (int) $row->total]);
+        $totals = $this->service->dailyConfirmedTotals($from, $to);
 
         $chartLabels = [];
         $incomingValues = [];
@@ -47,9 +40,10 @@ class StockTransactionController extends Controller
 
     public function create(string $type = 'in')
     {
+        $options = $this->catalog->formOptions();
         return view($type === 'in' ? 'pages.stok-masuk-create' : 'pages.stok-keluar-create', [
-            'products' => Product::orderBy('name')->get(),
-            'suppliers' => Supplier::orderBy('name')->get(),
+            'products' => $this->catalog->all(),
+            'suppliers' => $options['suppliers'],
             'type' => $type,
         ]);
     }

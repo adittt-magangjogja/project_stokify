@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Exports\StockReportExport;
 use App\Exports\TransactionReportExport;
-use App\Models\Category;
+use App\Services\CategoryService;
 use App\Services\ReportService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
-    public function __construct(private ReportService $service) {}
+    public function __construct(private ReportService $service, private CategoryService $categories) {}
 
     public function stock(Request $request)
     {
@@ -27,7 +27,7 @@ class ReportController extends Controller
 
         return view('pages.laporan-stok', [
             'products' => $data,
-            'categories' => Category::all(),
+            'categories' => $this->categories->getAll(),
         ]);
     }
 

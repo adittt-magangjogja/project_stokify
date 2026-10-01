@@ -42,4 +42,9 @@ class CategoryRepository implements CategoryRepositoryInterface
 
         return $category !== null && (bool) $category->delete();
     }
+
+    public function hasProducts(int $id): bool
+    {
+        return Category::query()->findOrFail($id)->products()->exists();
+    }
 }

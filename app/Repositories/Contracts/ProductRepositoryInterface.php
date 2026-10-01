@@ -19,4 +19,8 @@ interface ProductRepositoryInterface
     public function lowStock(int $limit = 10);
 
     public function adjustStock(int $id, int $qty): void;
+
+    public function hasStockHistory(int $id): bool;
+
+    public function syncAttributes(int $id, array $values): void;
 }

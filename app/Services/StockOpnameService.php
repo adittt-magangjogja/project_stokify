@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\ActivityLog;
 use App\Repositories\Contracts\{ProductRepositoryInterface, StockOpnameRepositoryInterface};
 use Illuminate\Support\Facades\DB;
 
@@ -11,6 +10,7 @@ class StockOpnameService
     public function __construct(
         private StockOpnameRepositoryInterface $opnames,
         private ProductRepositoryInterface $products,
+        private ActivityLogService $activity,
     ) {}
 
     public function list() { return $this->opnames->paginate(); }
@@ -32,7 +32,7 @@ class StockOpnameService
             ]);
 
             if ($diff !== 0) $this->products->adjustStock($product->id, $diff);
-            ActivityLog::record('stock_opname', "Opname {$product->name}, selisih {$diff}");
+            $this->activity->record('stock_opname', "Opname {$product->name}, selisih {$diff}");
 
             return $opname;
         });

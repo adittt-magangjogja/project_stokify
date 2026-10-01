@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\ActivityLog;
 use App\Repositories\Contracts\{ProductRepositoryInterface, StockTransactionRepositoryInterface};
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -12,6 +11,7 @@ class StockTransactionService
     public function __construct(
         private StockTransactionRepositoryInterface $transactions,
         private ProductRepositoryInterface $products,
+        private ActivityLogService $activity,
     ) {}
 
     public function list(array $filters)
@@ -24,6 +24,11 @@ class StockTransactionService
         return $this->transactions->pending();
     }
 
+    public function dailyConfirmedTotals($from, $to)
+    {
+        return $this->transactions->dailyConfirmedTotals($from, $to);
+    }
+
     // Dibuat Manajer -> status pending
     public function create(array $data)
     {
@@ -33,7 +38,7 @@ class StockTransactionService
         if ($data['type'] === 'out') $data['supplier_id'] = null;
 
         $trx = $this->transactions->create($data);
-        ActivityLog::record('create_transaction', "Transaksi {$trx->type} #{$trx->id} dibuat");
+        $this->activity->record('create_transaction', "Transaksi {$trx->type} #{$trx->id} dibuat");
 
         return $trx;
     }
@@ -60,7 +65,7 @@ class StockTransactionService
                 'confirmed_by' => auth()->id(),
                 'confirmed_at' => now(),
             ]);
-            ActivityLog::record('confirm_transaction', "Transaksi {$trx->type} #{$trx->id} dikonfirmasi");
+            $this->activity->record('confirm_transaction', "Transaksi {$trx->type} #{$trx->id} dikonfirmasi");
 
             return $trx;
         });

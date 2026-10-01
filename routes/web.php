@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/laporan', fn () => view('pages.laporan'))->name('laporan');
         Route::get('/laporan/stok', [ReportController::class, 'stock'])->name('laporan.stok');
         Route::get('/laporan/transaksi', [ReportController::class, 'transactions'])->name('laporan.transaksi');
+        Route::get('/laporan/aktivitas', [ReportController::class, 'activities'])->name('laporan.aktivitas');
     });
         Route::middleware('role:Admin')->group(function () {
         Route::get('/produk/{id}/edit', [ProductController::class, 'edit'])->whereNumber('id')->name('produk.edit');
@@ -42,7 +43,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('kategori', CategoryController::class)->parameters(['kategori' => 'category'])->except(['show']);
         Route::resource('atribut-produk', ProductAttributeController::class)->parameters(['atribut-produk' => 'attribute'])->except(['show']);
         Route::resource('pengguna', UserController::class)->parameters(['pengguna' => 'user'])->except(['show']);
-        Route::get('/laporan/aktivitas', [ReportController::class, 'activities'])->name('laporan.aktivitas');
         Route::get('/pengaturan', [SettingsController::class, 'edit'])->name('pengaturan');
         Route::put('/pengaturan', [SettingsController::class, 'update'])->name('pengaturan.update');
     });

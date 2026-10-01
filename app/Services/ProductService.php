@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\ActivityLog;
-use App\Models\StockTransaction;
-use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Repositories\Contracts\{ProductRepositoryInterface, StockTransactionRepositoryInterface};
+use App\Repositories\Contracts\CategoryRepositoryInterface;
+use App\Repositories\Contracts\SupplierRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +12,21 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
-    public function __construct(private ProductRepositoryInterface $products) {}
+    public function __construct(
+        private ProductRepositoryInterface $products,
+        private CategoryRepositoryInterface $categories,
+        private SupplierRepositoryInterface $suppliers,
+        private ProductAttributeService $attributes,
+        private StockTransactionRepositoryInterface $transactions,
+        private ActivityLogService $activity,
+    ) {}
+
+    public function formOptions(): array
+    {
+        return ['categories' => $this->categories->all(), 'suppliers' => $this->suppliers->all(), 'attributes' => $this->attributes->all()];
+    }
+
+    public function all() { return $this->products->all(); }
 
     public function list(array $filters) { return $this->products->paginate($filters); }
 
@@ -26,9 +40,9 @@ class ProductService
             if ($image) $data['image'] = $image->store('products', 'public');
 
             $product = $this->products->create($data);
-            $this->syncAttributes($product, $values);
+            $this->products->syncAttributes($product->id, $values);
             if ($product->stock > 0) {
-                StockTransaction::create([
+                $this->transactions->create([
                     'product_id' => $product->id,
                     'supplier_id' => $product->supplier_id,
                     'user_id' => auth()->id(),
@@ -41,7 +55,7 @@ class ProductService
                     'confirmed_at' => now(),
                 ]);
             }
-            ActivityLog::record('create_product', "Menambah produk {$product->name}");
+            $this->activity->record('create_product', "Menambah produk {$product->name}");
 
             return $product;
         });
@@ -61,8 +75,8 @@ class ProductService
             }
 
             $product = $this->products->update($id, $data);
-            $this->syncAttributes($product, $values);
-            ActivityLog::record('update_product', "Mengubah produk {$product->name}");
+            $this->products->syncAttributes($product->id, $values);
+            $this->activity->record('update_product', "Mengubah produk {$product->name}");
 
             return $product;
         });
@@ -71,23 +85,14 @@ class ProductService
     public function delete(int $id): bool
     {
         $product = $this->products->find($id);
-        if ($product->stockTransactions()->exists() || $product->stockOpnames()->exists()) {
+        if ($this->products->hasStockHistory($id)) {
             return false;
         }
 
         if ($product->image) Storage::disk('public')->delete($product->image);
-        ActivityLog::record('delete_product', "Menghapus produk {$product->name}");
+        $this->activity->record('delete_product', "Menghapus produk {$product->name}");
 
         return $this->products->delete($id);
     }
 
-    private function syncAttributes($product, array $values): void
-    {
-        $product->attributeValues()->delete();
-        foreach ($values as $attributeId => $value) {
-            if (filled($value)) {
-                $product->attributeValues()->create(['product_attribute_id' => $attributeId, 'value' => $value]);
-            }
-        }
-    }
 }

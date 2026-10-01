@@ -37,4 +37,9 @@ class CategoryService
     {
         return $this->categoryRepository->delete($category->id);
     }
+
+    public function hasProducts(Category $category): bool
+    {
+        return $this->categoryRepository->hasProducts($category->id);
+    }
 }

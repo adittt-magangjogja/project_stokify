@@ -12,4 +12,5 @@
     <li class="sidebar-section-label">Laporan</li>
     <x-sidebar-menu-dashboard routeName="laporan.stok" title="Laporan stok"/>
     <x-sidebar-menu-dashboard routeName="laporan.transaksi" title="Laporan transaksi"/>
+    <x-sidebar-menu-dashboard routeName="laporan.aktivitas" title="Laporan aktivitas"/>
 </x-sidebar-dashboard>

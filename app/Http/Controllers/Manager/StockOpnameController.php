@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StockOpnameRequest;
-use App\Models\Product;
 use App\Services\StockOpnameService;
+use App\Services\ProductService;
 
 class StockOpnameController extends Controller
 {
@@ -13,7 +13,7 @@ class StockOpnameController extends Controller
 
     public function index() { return view('pages.stok-opname', ['opnames' => $this->service->list()]); }
 
-    public function create() { return view('pages.stok-opname-create', ['products' => Product::orderBy('name')->get()]); }
+    public function create(ProductService $products) { return view('pages.stok-opname-create', ['products' => $products->all()]); }
 
     public function store(StockOpnameRequest $request)
     {

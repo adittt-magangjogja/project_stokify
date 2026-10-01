@@ -68,7 +68,7 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        if ($category->products()->exists()) {
+        if ($this->categoryService->hasProducts($category)) {
             return back()->with('error', 'Kategori masih digunakan produk. Pindahkan produk sebelum menghapus kategori.');
         }
 
