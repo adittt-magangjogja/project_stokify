@@ -38,7 +38,7 @@ class TransactionReportExport implements FromCollection, WithHeadings, WithMappi
         return [AfterSheet::class => function (AfterSheet $event): void {
             $sheet = $event->sheet->getDelegate();
             $table = new Table('A1:F' . $sheet->getHighestRow(), 'LaporanTransaksi');
-            $table->setStyle((new TableStyle())->setTheme(TableStyle::TABLE_STYLE_MEDIUM2));
+            $table->setStyle((new TableStyle())->setTheme(TableStyle::TABLE_STYLE_MEDIUM7)->setShowRowStripes(true));
             $sheet->addTable($table);
         }];
     }
@@ -50,6 +50,7 @@ class TransactionReportExport implements FromCollection, WithHeadings, WithMappi
         $sheet->getStyle('A1:F' . $sheet->getHighestRow())->applyFromArray([
             'borders' => ['allBorders' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, 'color' => ['rgb' => 'D5DFED']]],
         ]);
+        $sheet->getStyle('A1:F1')->applyFromArray(['font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']], 'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => ['rgb' => '70AD47']]]);
         return [];
     }
 }

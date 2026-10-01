@@ -38,7 +38,7 @@ class ProductsExport implements FromQuery, WithHeadings, WithMapping, ShouldAuto
         return [AfterSheet::class => function (AfterSheet $event): void {
             $sheet = $event->sheet->getDelegate();
             $table = (new Table('A1:J' . $sheet->getHighestRow(), 'Produk'));
-            $table->setStyle((new TableStyle())->setTheme(TableStyle::TABLE_STYLE_MEDIUM2));
+            $table->setStyle((new TableStyle())->setTheme(TableStyle::TABLE_STYLE_MEDIUM7)->setShowRowStripes(true));
             $sheet->addTable($table);
         }];
     }
@@ -53,10 +53,10 @@ class ProductsExport implements FromQuery, WithHeadings, WithMapping, ShouldAuto
         ]);
         $sheet->getStyle('C:C')->getAlignment()->setWrapText(true);
 
-        // Apply an explicit blue style so the table remains clearly formatted in Excel-compatible apps.
+        // Apply an explicit green header so the table stays consistent in Excel-compatible apps.
         $sheet->getStyle('A1:J1')->applyFromArray([
             'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
-            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '4472C4']],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '70AD47']],
             'alignment' => ['vertical' => Alignment::VERTICAL_CENTER],
         ]);
         $sheet->getRowDimension(1)->setRowHeight(24);
