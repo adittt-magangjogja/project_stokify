@@ -15,7 +15,15 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $request->merge(['name' => $request->input('name', $request->input('nama')), 'address' => $request->input('address', $request->input('alamat')), 'phone' => $request->input('phone', $request->input('telepon'))]);
-        $data = $request->validate(['name' => 'required|string|max:150', 'address' => 'nullable|string', 'phone' => 'nullable|string|max:30', 'email' => 'nullable|email|max:150']);
+        $data = $request->validate([
+            'name' => 'required|string|max:150',
+            'address' => 'nullable|string',
+            'phone' => ['nullable', 'string', 'max:15', 'regex:/^[0-9]+$/'],
+            'email' => ['nullable', 'string', 'email:rfc', 'max:150'],
+        ], [
+            'phone.regex' => 'Nomor telepon hanya boleh berisi angka.',
+            'email.email' => 'Masukkan alamat email yang valid, contohnya nama@gmail.com.',
+        ]);
         $this->service->create($data);
         return redirect()->route('supplier.index')->with('success', 'Supplier ditambahkan.');
     }
@@ -23,7 +31,15 @@ class SupplierController extends Controller
     public function update(Request $request, Supplier $supplier)
     {
         $request->merge(['name' => $request->input('name', $request->input('nama')), 'address' => $request->input('address', $request->input('alamat')), 'phone' => $request->input('phone', $request->input('telepon'))]);
-        $data = $request->validate(['name' => 'required|string|max:150', 'address' => 'nullable|string', 'phone' => 'nullable|string|max:30', 'email' => 'nullable|email|max:150']);
+        $data = $request->validate([
+            'name' => 'required|string|max:150',
+            'address' => 'nullable|string',
+            'phone' => ['nullable', 'string', 'max:15', 'regex:/^[0-9]+$/'],
+            'email' => ['nullable', 'string', 'email:rfc', 'max:150'],
+        ], [
+            'phone.regex' => 'Nomor telepon hanya boleh berisi angka.',
+            'email.email' => 'Masukkan alamat email yang valid, contohnya nama@gmail.com.',
+        ]);
         $this->service->update($supplier, $data);
         return redirect()->route('supplier.index')->with('success', 'Supplier diperbarui.');
     }

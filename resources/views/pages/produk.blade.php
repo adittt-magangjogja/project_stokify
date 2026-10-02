@@ -199,8 +199,7 @@
 
                                     {{-- Hapus (membuka modal konfirmasi) --}}
                                  <button type="button"
-                                    data-modal-target="delete-modal"
-                                    data-modal-toggle="delete-modal"
+                                    data-delete-trigger
                                     data-action="{{ route('produk.destroy', $product->id) }}"
                                     data-name="{{ $product->name }}"
                                     class="btn-delete px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
@@ -249,58 +248,6 @@
 </div>
 
 
-{{-- Modal konfirmasi hapus (Flowbite) --}}
-<div id="delete-modal" tabindex="-1"
-     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-md max-h-full">
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-
-            <button type="button" data-modal-hide="delete-modal"
-                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                <svg class="w-3 h-3" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                </svg>
-                <span class="sr-only">Tutup</span>
-            </button>
-
-            <div class="p-4 text-center md:p-5">
-                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                </svg>
-
-                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                    Yakin ingin menghapus produk
-                    <span id="delete-product-name" class="font-semibold text-gray-900 dark:text-white"></span>?
-                </h3>
-
-                <form id="delete-form" method="POST" action="" class="inline-flex gap-2">
-                    @csrf
-                    @method('DELETE')
-
-                    <button type="submit"
-                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center dark:focus:ring-red-800">
-                        Ya, hapus
-                    </button>
-
-                    <button type="button" data-modal-hide="delete-modal"
-                        class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                        Batal
-                    </button>
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<script>
-    // Isi action form hapus dan nama produk pada modal
-    document.querySelectorAll('.btn-delete').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            document.getElementById('delete-form').action = btn.dataset.action;
-            document.getElementById('delete-product-name').textContent = btn.dataset.name;
-        });
-    });
-</script> 
 
 @endsection
+

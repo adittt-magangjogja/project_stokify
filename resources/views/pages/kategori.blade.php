@@ -41,7 +41,7 @@
                             <td class="px-6 py-4 text-right">
                                 <div class="inline-flex items-center gap-3">
                                     <a class="font-semibold text-emerald-800 transition hover:text-emerald-950" href="{{ route('kategori.edit', $category) }}">Edit</a>
-                                    <form method="POST" action="{{ route('kategori.destroy', $category) }}" onsubmit="return confirm('Hapus kategori ini?')">@csrf @method('DELETE')
+                                    <form method="POST" action="{{ route('kategori.destroy', $category) }}" data-delete-confirm data-delete-name="{{ $category->name }}">@csrf @method('DELETE')
                                         <button type="submit" class="font-semibold text-rose-600 transition hover:text-rose-800">Hapus</button>
                                     </form>
                                 </div>
@@ -56,3 +56,4 @@
     </section>
 </div>
 @endsection
+

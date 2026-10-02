@@ -74,5 +74,25 @@
     </div>
 
 </div>
+
+<dialog id="delete-confirm-dialog" class="w-[calc(100%-2rem)] max-w-md rounded-2xl p-0 shadow-2xl backdrop:bg-slate-950/50">
+    <div class="relative overflow-hidden rounded-2xl bg-white p-6 sm:p-7">
+        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-rose-400 via-red-500 to-orange-400"></div>
+        <div class="flex items-start gap-4">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
+                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M10.3 3.9 2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3l-7.5-13.1a2 2 0 0 0-3.4 0Z"/></svg>
+            </div>
+            <div class="min-w-0 flex-1 pt-0.5">
+                <h2 class="text-lg font-bold text-slate-900">Hapus data ini?</h2>
+                <p class="mt-1 text-sm leading-6 text-slate-600">Data <strong id="delete-confirm-name" class="break-words font-semibold text-slate-800"></strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>
+            </div>
+            <button type="button" data-delete-cancel aria-label="Tutup" class="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"><svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4.2 4.2a.75.75 0 0 1 1.06 0L10 8.94l4.74-4.74a.75.75 0 1 1 1.06 1.06L11.06 10l4.74 4.74a.75.75 0 1 1-1.06 1.06L10 11.06l-4.74 4.74a.75.75 0 0 1-1.06-1.06L8.94 10 4.2 5.26a.75.75 0 0 1 0-1.06Z"/></svg></button>
+        </div>
+        <div class="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <button type="button" data-delete-cancel class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Batal</button>
+            <form id="delete-confirm-form" method="POST" action="">@csrf @method('DELETE')<button type="submit" class="w-full rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-700 focus:outline-none focus:ring-4 focus:ring-rose-200 sm:w-auto">Ya, hapus</button></form>
+        </div>
+    </div>
+</dialog>
 </body>
 </html>

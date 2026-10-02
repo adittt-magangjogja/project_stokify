@@ -5,6 +5,7 @@ import './charts';
 import './reference-inputs';
 import './dashboard-clock';
 import './currency-inputs';
+import './delete-confirmation';
 
 document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.getElementById('notification-toggle');
