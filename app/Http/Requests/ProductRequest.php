@@ -29,7 +29,7 @@ class ProductRequest extends FormRequest
         return [
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'nullable|exists:suppliers,id',
-            'code' => ['required', 'string', 'max:50', Rule::unique('products', 'code')->ignore($id)],
+            'code' => ['required', 'string', 'regex:/^JS[0-9]{3,10}$/i', Rule::unique('products', 'code')->ignore($id)],
             'name' => 'required|string|max:150',
             'description' => 'nullable|string|max:5000',
             'unit' => ['required', Rule::in(['Pcs', 'Unit', 'Buah', 'Box', 'Pack', 'Kg', 'Gram', 'Liter', 'Meter', 'Set'])],
@@ -39,6 +39,13 @@ class ProductRequest extends FormRequest
             'minimum_stock' => 'required|integer|min:0',
             'image' => 'nullable|image|max:2048',
             'attribute_values' => 'nullable|array', // [attribute_id => value]
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'code.regex' => 'Format kode produk harus JS diikuti 3–10 angka, contohnya JS001 atau JS1000.',
         ];
     }
 }

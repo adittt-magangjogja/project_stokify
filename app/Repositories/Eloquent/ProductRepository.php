@@ -13,17 +13,27 @@ class ProductRepository implements ProductRepositoryInterface
     public function paginate(array $filters = [], int $perPage = 10)
     {
         return Product::with(['category', 'supplier'])
-            ->when($filters['search'] ?? null, function ($q, $s) {
+            ->when(filled($filters['search'] ?? null), function ($q) use ($filters) {
+                $s = trim($filters['search']);
                 $q->where(function ($q) use ($s) {
                     $q->where('name', 'like', "%{$s}%")
                         ->orWhere('code', 'like', "%{$s}%");
                 });
             })
-            ->when($filters['category_id'] ?? null, function ($q, $id) {
-                $q->where('category_id', $id);
+            ->when(filled($filters['category_id'] ?? null), function ($q) use ($filters) {
+                $q->where('category_id', $filters['category_id']);
+            })
+            ->when(filled($filters['stok'] ?? null), function ($q) use ($filters) {
+                match ($filters['stok']) {
+                    'tersedia' => $q->whereColumn('stock', '>', 'minimum_stock'),
+                    'minimum' => $q->where('stock', '>', 0)->whereColumn('stock', '<=', 'minimum_stock'),
+                    'habis' => $q->where('stock', 0),
+                    default => null,
+                };
             })
             ->latest()
-            ->paginate($perPage);
+            ->paginate($perPage)
+            ->appends($filters);
     }
 
     /**

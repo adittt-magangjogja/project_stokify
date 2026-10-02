@@ -16,7 +16,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         return view('pages.produk', [
-            'products' => $this->service->list($request->only('search', 'category_id')),
+            'products' => $this->service->list($request->only('search', 'category_id', 'stok')),
             'categories' => $this->service->formOptions()['categories'],
         ]);
     }

@@ -28,7 +28,7 @@ class ProductsImport implements ToCollection, WithHeadingRow
                 $data['supplier_id'] = $data['supplier_id'] ?? Supplier::where('name', $data['supplier_name'] ?? $data['supplier'] ?? '')->value('id');
 
                 $validator = Validator::make($data, [
-                    'code' => 'required|string|max:50',
+                    'code' => ['required', 'string', 'regex:/^JS[0-9]{3,10}$/i'],
                     'name' => 'required|string|max:150',
                     'description' => 'nullable|string|max:5000',
                     'category_id' => 'required|integer|exists:categories,id',
@@ -38,6 +38,8 @@ class ProductsImport implements ToCollection, WithHeadingRow
                     'selling_price' => 'required|numeric|min:0',
                     'stock' => 'nullable|integer|min:0',
                     'minimum_stock' => 'required|integer|min:0',
+                ], [
+                    'code.regex' => 'Format kode produk harus JS diikuti 3–10 angka, contohnya JS001 atau JS1000.',
                 ]);
 
                 if ($validator->fails()) {

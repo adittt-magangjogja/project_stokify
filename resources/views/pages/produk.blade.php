@@ -88,11 +88,11 @@
 
             {{-- Filter kategori --}}
             <select
-                name="kategori"
+                name="category_id"
                 class="p-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                 <option value="">Semua Kategori</option>
                 @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" @selected(request('kategori') == $category->id)>
+                <option value="{{ $category->id }}" @selected(request('category_id') == $category->id)>
                         {{ $category->name }}
                     </option>
                 @endforeach

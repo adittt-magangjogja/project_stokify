@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:Admin,Manajer Gudang,Staff Gudang')->group(function () {
         Route::get('/stok/opname', [StockOpnameController::class, 'index'])->name('stok.opname');
     });
-    Route::middleware('role:Manajer Gudang,Staff Gudang')->group(function () {
+    Route::middleware('role:Admin,Manajer Gudang,Staff Gudang')->group(function () {
         Route::get('/stok/opname/tambah', [StockOpnameController::class, 'create'])->name('stok.opname.create');
         Route::post('/stok/opname', [StockOpnameController::class, 'store'])->name('stok.opname.store');
     });
