@@ -10,7 +10,7 @@ class SupplierRepository implements SupplierRepositoryInterface
 {
     public function all(): Collection
     {
-        return Supplier::query()->orderBy('name')->get();
+        return Supplier::query()->with('category')->orderBy('name')->get();
     }
 
     public function findById(int $id): ?Supplier

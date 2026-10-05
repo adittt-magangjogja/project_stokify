@@ -54,13 +54,15 @@ class ProductController extends Controller
     {
         return view('pages.produk-edit', array_merge([
             'product' => $this->service->find($id),
+            'filters' => request()->only('search', 'category_id', 'stok'),
         ], $this->service->formOptions()));
     }
 
     public function update(ProductRequest $request, int $id)
     {
         $this->service->update($id, $request->validated(), $request->file('image'));
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
+        return redirect()->route('produk.index', $request->only('search', 'category_id', 'stok'))
+            ->with('success', 'Produk berhasil diperbarui.');
     }
 
     public function destroy(int $id)

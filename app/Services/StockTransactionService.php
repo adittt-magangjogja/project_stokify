@@ -64,7 +64,7 @@ class StockTransactionService
         });
     }
 
-    public function availableStock(int $productId): int
+    public function availableStock(int $productId): float
     {
         $product = $this->products->find($productId);
         return max(0, $product->stock - $this->transactions->pendingOutgoingQuantity($productId));

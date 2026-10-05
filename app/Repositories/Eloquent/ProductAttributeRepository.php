@@ -10,7 +10,7 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
 {
     public function all(): \Illuminate\Database\Eloquent\Collection
     {
-        return ProductAttribute::orderBy('name')->get();
+        return ProductAttribute::with('categories:id,name')->orderBy('name')->get();
     }
 
     public function paginate(int $perPage = 15): LengthAwarePaginator

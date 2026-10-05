@@ -18,7 +18,7 @@ interface StockTransactionRepositoryInterface
 
     public function pending(): Collection;
 
-    public function pendingOutgoingQuantity(int $productId): int;
+    public function pendingOutgoingQuantity(int $productId): float;
 
     public function findByRequestKey(string $requestKey): ?StockTransaction;
 

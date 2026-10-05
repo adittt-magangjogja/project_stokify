@@ -24,7 +24,7 @@ class StockTransactionRequest extends FormRequest
 
             'type' => 'required|in:in,out',
 
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'required|numeric|decimal:0,3|gt:0|max:999999999.999',
 
             'supplier_id' => 'required_if:type,in|nullable|exists:suppliers,id',
 

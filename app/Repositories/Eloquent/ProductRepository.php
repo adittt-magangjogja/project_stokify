@@ -16,8 +16,15 @@ class ProductRepository implements ProductRepositoryInterface
             ->when(filled($filters['search'] ?? null), function ($q) use ($filters) {
                 $s = trim($filters['search']);
                 $q->where(function ($q) use ($s) {
-                    $q->where('name', 'like', "%{$s}%")
-                        ->orWhere('code', 'like', "%{$s}%");
+                    // Kode produk menggunakan format JS diikuti angka. Untuk kata
+                    // kunci berbentuk kode, cari kecocokan persis agar JS001 tidak
+                    // ikut menampilkan JS0011, JS0012, dan seterusnya.
+                    if (preg_match('/^JS\d+$/i', $s)) {
+                        $q->where('code', $s);
+                    } else {
+                        $q->where('name', 'like', "%{$s}%")
+                            ->orWhere('code', 'like', "%{$s}%");
+                    }
                 });
             })
             ->when(filled($filters['category_id'] ?? null), function ($q) use ($filters) {
@@ -98,7 +105,7 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * Menambah atau mengurangi stok produk.
      */
-    public function adjustStock(int $id, int $qty): void
+    public function adjustStock(int $id, float $qty): void
     {
         $product = Product::lockForUpdate()->findOrFail($id);
 

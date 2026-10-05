@@ -36,8 +36,8 @@ class ProductsImport implements ToCollection, WithHeadingRow
                     'unit' => 'required|string|max:30',
                     'purchase_price' => 'required|numeric|min:0',
                     'selling_price' => 'required|numeric|min:0',
-                    'stock' => 'nullable|integer|min:0',
-                    'minimum_stock' => 'required|integer|min:0',
+                    'stock' => 'nullable|numeric|min:0',
+                    'minimum_stock' => 'required|numeric|min:0',
                 ], [
                     'code.regex' => 'Format kode produk harus JS diikuti 3–10 angka, contohnya JS001 atau JS1000.',
                 ]);

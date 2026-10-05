@@ -66,6 +66,12 @@
     <div id="main-content" class="relative min-h-[calc(100vh-3.5rem)] bg-[#f4f7fc] transition-[margin] duration-200 lg:ml-64">
 
         <main class="min-h-[calc(100vh-10rem)] px-4 py-6 sm:px-6 lg:px-7">
+            @if(request()->routeIs('*.create', '*.edit', '*.detail', '*.show'))
+                <button type="button" data-back-button data-fallback-url="{{ url()->previous() }}" class="mb-4 inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-blue-100">
+                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M17 10a.75.75 0 0 1-.75.75H5.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 1 1 1.06 1.06l-3.22 3.22h10.69A.75.75 0 0 1 17 10Z" clip-rule="evenodd"/></svg>
+                    Kembali
+                </button>
+            @endif
             @yield('content')
         </main>
 
@@ -75,22 +81,19 @@
 
 </div>
 
-<dialog id="delete-confirm-dialog" class="w-[calc(100%-2rem)] max-w-md rounded-2xl p-0 shadow-2xl backdrop:bg-slate-950/50">
-    <div class="relative overflow-hidden rounded-2xl bg-white p-6 sm:p-7">
-        <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-rose-400 via-red-500 to-orange-400"></div>
-        <div class="flex items-start gap-4">
-            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
-                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M10.3 3.9 2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3l-7.5-13.1a2 2 0 0 0-3.4 0Z"/></svg>
+<dialog id="delete-confirm-dialog" aria-labelledby="delete-confirm-title" aria-describedby="delete-confirm-description" class="m-auto w-[calc(100%-2rem)] max-w-lg overflow-visible rounded-2xl bg-transparent p-0 shadow-[0_24px_70px_rgba(15,23,42,0.18)] backdrop:bg-slate-950/40">
+    <div class="relative rounded-2xl bg-white px-5 pb-5 pt-14 text-center sm:px-7 sm:pb-6 sm:pt-16">
+        <div class="absolute left-1/2 top-0 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-[0_14px_35px_rgba(15,23,42,0.08)]">
+            <div class="flex h-[4.25rem] w-[4.25rem] items-center justify-center rounded-full bg-rose-50 text-rose-600">
+                <svg class="h-9 w-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7h16M10 11v6m4-6v6M5.5 7l1 13h11l1-13M9 7V4h6v3"/></svg>
             </div>
-            <div class="min-w-0 flex-1 pt-0.5">
-                <h2 class="text-lg font-bold text-slate-900">Hapus data ini?</h2>
-                <p class="mt-1 text-sm leading-6 text-slate-600">Data <strong id="delete-confirm-name" class="break-words font-semibold text-slate-800"></strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>
-            </div>
-            <button type="button" data-delete-cancel aria-label="Tutup" class="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"><svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4.2 4.2a.75.75 0 0 1 1.06 0L10 8.94l4.74-4.74a.75.75 0 1 1 1.06 1.06L11.06 10l4.74 4.74a.75.75 0 1 1-1.06 1.06L10 11.06l-4.74 4.74a.75.75 0 0 1-1.06-1.06L8.94 10 4.2 5.26a.75.75 0 0 1 0-1.06Z"/></svg></button>
         </div>
-        <div class="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-            <button type="button" data-delete-cancel class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Batal</button>
-            <form id="delete-confirm-form" method="POST" action="">@csrf @method('DELETE')<button type="submit" class="w-full rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-700 focus:outline-none focus:ring-4 focus:ring-rose-200 sm:w-auto">Ya, hapus</button></form>
+        <button type="button" data-delete-cancel aria-label="Tutup" class="absolute right-5 top-5 rounded-full p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 sm:right-7 sm:top-7"><svg class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M4.2 4.2a.75.75 0 0 1 1.06 0L10 8.94l4.74-4.74a.75.75 0 1 1 1.06 1.06L11.06 10l4.74 4.74a.75.75 0 1 1-1.06 1.06L10 11.06l-4.74 4.74a.75.75 0 0 1-1.06-1.06L8.94 10 4.2 5.26a.75.75 0 0 1 0-1.06Z"/></svg></button>
+        <h2 id="delete-confirm-title" class="text-lg font-bold tracking-tight text-slate-900 sm:text-xl">Hapus data ini?</h2>
+        <p id="delete-confirm-description" class="mx-auto mt-3 max-w-md text-sm font-medium leading-6 text-slate-500">Data <strong id="delete-confirm-name" class="break-words font-semibold text-slate-700"></strong> akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>
+        <div class="mt-5 flex flex-col-reverse items-stretch justify-end gap-2 sm:flex-row sm:items-center sm:gap-3">
+            <button type="button" data-delete-cancel class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">Batal</button>
+            <form id="delete-confirm-form" method="POST" action="">@csrf @method('DELETE')<button id="delete-confirm-submit" type="submit" class="w-full rounded-xl bg-rose-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-700 focus:outline-none focus:ring-4 focus:ring-rose-200 sm:w-auto">Hapus</button></form>
         </div>
     </div>
 </dialog>

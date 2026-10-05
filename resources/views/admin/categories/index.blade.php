@@ -23,7 +23,7 @@
                             <td class="px-6 py-4">{{ $category->description ?: '—' }}</td>
                             <td class="px-6 py-4">
                                 <a class="mr-3 text-blue-600 hover:underline" href="{{ route('admin.categories.edit', $category) }}">Ubah</a>
-                                <form class="inline" method="POST" action="{{ route('admin.categories.destroy', $category) }}" data-delete-confirm data-delete-name="{{ $category->name }}">
+                                <form class="inline" method="POST" action="{{ route('admin.categories.destroy', $category) }}" data-delete-confirm data-delete-type="kategori" data-delete-name="{{ $category->name }}">
                                     @csrf
                                     @method('DELETE')
                                     <button class="text-red-600 hover:underline" type="submit">Hapus</button>

@@ -14,12 +14,17 @@ class StockOpname extends Model
         'user_id',
         'system_stock',
         'physical_stock',
+        // Compatibility for databases created by the older actual_stock schema.
+        'actual_stock',
         'difference',
         'opname_date',
         'note',
     ];
 
     protected $casts = [
+        'system_stock' => 'decimal:3',
+        'physical_stock' => 'decimal:3',
+        'difference' => 'decimal:3',
         'opname_date' => 'date',
     ];
 

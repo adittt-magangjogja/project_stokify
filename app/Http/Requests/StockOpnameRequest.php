@@ -21,7 +21,7 @@ class StockOpnameRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
-            'physical_stock' => 'required|integer|min:0',
+            'physical_stock' => 'required|numeric|decimal:0,3|min:0|max:999999999.999',
             'opname_date' => 'nullable|date',
             'note' => 'nullable|string',
         ];

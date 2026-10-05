@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Contracts\{ProductRepositoryInterface, StockOpnameRepositoryInterface};
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class StockOpnameService
 {
@@ -21,7 +22,7 @@ class StockOpnameService
             $product = $this->products->find($data['product_id']);
             $diff = $data['physical_stock'] - $product->stock;
 
-            $opname = $this->opnames->create([
+            $opnameData = [
                 'product_id' => $product->id,
                 'user_id' => auth()->id(),
                 'system_stock' => $product->stock,
@@ -29,7 +30,14 @@ class StockOpnameService
                 'difference' => $diff,
                 'note' => $data['note'] ?? null,
                 'opname_date' => $data['opname_date'] ?? now()->toDateString(),
-            ]);
+            ];
+
+            // Existing installations may still have a required legacy column.
+            if (Schema::hasColumn('stock_opnames', 'actual_stock')) {
+                $opnameData['actual_stock'] = $data['physical_stock'];
+            }
+
+            $opname = $this->opnames->create($opnameData);
 
             if ($diff !== 0) $this->products->adjustStock($product->id, $diff);
             $this->activity->record('stock_opname', "Opname {$product->name}, selisih {$diff}");

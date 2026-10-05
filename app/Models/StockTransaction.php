@@ -24,6 +24,7 @@ class StockTransaction extends Model
     ];
 
     protected $casts = [
+        'quantity' => 'decimal:3',
         'transaction_date' => 'date',
         'confirmed_at' => 'datetime',
     ];

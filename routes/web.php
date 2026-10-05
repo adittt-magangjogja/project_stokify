@@ -63,15 +63,20 @@ Route::middleware('auth')->group(function () {
         Route::post('/stok/opname', [StockOpnameController::class, 'store'])->name('stok.opname.store');
     });
     Route::get('/supplier', [SupplierController::class, 'index'])->middleware('role:Admin,Manajer Gudang')->name('supplier.index');
+    Route::middleware('role:Admin,Manajer Gudang')->group(function () {
+        Route::get('/supplier/create', [SupplierController::class, 'create'])->name('supplier.create');
+        Route::post('/supplier', [SupplierController::class, 'store'])->name('supplier.store');
+    });
     Route::middleware('role:Admin')->group(function () {
         Route::get('/produk/export', [ProductController::class, 'export'])->name('produk.export');
         Route::post('/produk/import', [ProductController::class, 'import'])->name('produk.import');
-        Route::resource('supplier', SupplierController::class)->parameters(['supplier' => 'supplier'])->except(['show', 'index']);
+        Route::resource('supplier', SupplierController::class)->parameters(['supplier' => 'supplier'])->except(['show', 'index', 'create', 'store']);
     });
     Route::middleware('role:Staff Gudang')->group(function () {
         Route::get('/konfirmasi-barang', [ConfirmationController::class, 'index'])->name('konfirmasi-barang');
         Route::get('/konfirmasi-pengeluaran', [ConfirmationController::class, 'index'])->name('konfirmasi-pengeluaran');
         Route::post('/konfirmasi-barang/{id}', [ConfirmationController::class, 'confirm'])->name('konfirmasi-barang.confirm');
+        Route::get('/riwayat-transaksi', [ConfirmationController::class, 'history'])->name('riwayat-transaksi');
     });
 });
 

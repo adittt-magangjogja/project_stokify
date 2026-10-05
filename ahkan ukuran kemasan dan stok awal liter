@@ -1,0 +1,16 @@
+warning: in the working copy of 'app/Http/Controllers/Admin/SupplierController.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'app/Repositories/Contracts/ProductRepositoryInterface.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'app/Repositories/Contracts/StockTransactionRepositoryInterface.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'app/Repositories/Eloquent/ProductRepository.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'app/Repositories/Eloquent/StockTransactionRepository.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'app/Services/ReportService.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/admin/categories/index.blade.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/pages/atribut-produk/index.blade.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/pages/dashboard-staff.blade.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/pages/kategori.blade.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/pages/pengguna/index.blade.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/pages/produk-create.blade.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/pages/produk.blade.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/pages/supplier-create.blade.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/pages/supplier-edit.blade.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/pages/supplier.blade.php', CRLF will be replaced by LF the next time Git touches it

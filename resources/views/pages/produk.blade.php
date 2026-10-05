@@ -192,7 +192,7 @@
                                     </a>
 
                                     @if (auth()->user()->role->value === 'Admin')
-                                    <a href="{{ route('produk.edit', $product->id) }}"
+                                    <a href="{{ route('produk.edit', array_merge(['id' => $product->id], request()->only('search', 'category_id', 'stok'))) }}"
                                        class="px-3 py-2 text-xs font-medium text-yellow-700 bg-yellow-100 rounded-lg hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300">
                                         Edit
                                     </a>
@@ -202,6 +202,7 @@
                                     data-delete-trigger
                                     data-action="{{ route('produk.destroy', $product->id) }}"
                                     data-name="{{ $product->name }}"
+                                    data-delete-type="produk"
                                     class="btn-delete px-3 py-2 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300">
                                     Hapus
                                     </button>

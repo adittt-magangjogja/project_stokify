@@ -5,5 +5,6 @@
     <li class="sidebar-section-label">Tugas gudang</li>
     <x-sidebar-menu-dashboard routeName="konfirmasi-barang" title="Konfirmasi barang masuk"/>
     <x-sidebar-menu-dashboard routeName="konfirmasi-pengeluaran" title="Konfirmasi barang keluar"/>
+    <x-sidebar-menu-dashboard routeName="riwayat-transaksi" title="Riwayat transaksi"/>
     <x-sidebar-menu-dashboard routeName="stok.opname" title="Bantu stock opname"/>
 </x-sidebar-dashboard>

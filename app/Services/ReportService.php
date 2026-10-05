@@ -23,14 +23,14 @@ class ReportService
 
         return $products->each(function (Product $product) use ($to, $futureTransactions, $futureOpnames, $periodTransactions) {
             $future = $futureTransactions->get($product->id, collect());
-            $futureIn = (int) $future->where('type', 'in')->sum('quantity');
-            $futureOut = (int) $future->where('type', 'out')->sum('quantity');
+            $futureIn = (float) $future->where('type', 'in')->sum('quantity');
+            $futureOut = (float) $future->where('type', 'out')->sum('quantity');
             $opnameAdjustments = (int) $futureOpnames->get($product->id, collect())->sum('difference');
             $movements = $periodTransactions->get($product->id, collect());
 
             $product->setAttribute('stock_at_date', max(0, $product->stock - $futureIn + $futureOut - $opnameAdjustments));
-            $product->setAttribute('period_in', (int) $movements->where('type', 'in')->sum('quantity'));
-            $product->setAttribute('period_out', (int) $movements->where('type', 'out')->sum('quantity'));
+            $product->setAttribute('period_in', (float) $movements->where('type', 'in')->sum('quantity'));
+            $product->setAttribute('period_out', (float) $movements->where('type', 'out')->sum('quantity'));
             $product->setAttribute('report_date', $to->toDateString());
         });
     }

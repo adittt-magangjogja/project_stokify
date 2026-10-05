@@ -101,9 +101,9 @@ class StockTransactionRepository implements StockTransactionRepositoryInterface
             ->get();
     }
 
-    public function pendingOutgoingQuantity(int $productId): int
+    public function pendingOutgoingQuantity(int $productId): float
     {
-        return (int) $this->model
+        return (float) $this->model
             ->where('product_id', $productId)
             ->where('type', 'out')
             ->where('status', 'pending')
