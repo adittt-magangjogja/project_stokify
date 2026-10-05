@@ -18,6 +18,10 @@ interface StockTransactionRepositoryInterface
 
     public function pending(): Collection;
 
+    public function pendingOutgoingQuantity(int $productId): int;
+
+    public function findByRequestKey(string $requestKey): ?StockTransaction;
+
     public function create(array $data): StockTransaction;
 
     public function update(StockTransaction $stockTransaction, array $data): StockTransaction;

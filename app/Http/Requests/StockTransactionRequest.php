@@ -31,6 +31,7 @@ class StockTransactionRequest extends FormRequest
             'transaction_date' => 'nullable|date',
 
             'note' => 'nullable|string',
+            'request_key' => 'required|uuid',
         ];
     }
 }

@@ -20,6 +20,7 @@ class StockTransaction extends Model
         'transaction_date',
         'confirmed_by',
         'confirmed_at',
+        'request_key',
     ];
 
     protected $casts = [

@@ -41,8 +41,12 @@ class StockTransactionController extends Controller
     public function create(string $type = 'in')
     {
         $options = $this->catalog->formOptions();
+        $products = $this->catalog->all();
+        foreach ($products as $product) {
+            $product->available_stock = $this->service->availableStock($product->id);
+        }
         return view($type === 'in' ? 'pages.stok-masuk-create' : 'pages.stok-keluar-create', [
-            'products' => $this->catalog->all(),
+            'products' => $products,
             'suppliers' => $options['suppliers'],
             'type' => $type,
         ]);

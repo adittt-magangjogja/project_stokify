@@ -101,6 +101,20 @@ class StockTransactionRepository implements StockTransactionRepositoryInterface
             ->get();
     }
 
+    public function pendingOutgoingQuantity(int $productId): int
+    {
+        return (int) $this->model
+            ->where('product_id', $productId)
+            ->where('type', 'out')
+            ->where('status', 'pending')
+            ->sum('quantity');
+    }
+
+    public function findByRequestKey(string $requestKey): ?StockTransaction
+    {
+        return $this->model->where('request_key', $requestKey)->first();
+    }
+
     public function dailyConfirmedTotals($from, $to): \Illuminate\Support\Collection
     {
         return $this->model->where('status', 'confirmed')->whereBetween('transaction_date', [$from, $to])

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\Contracts\{ProductRepositoryInterface, StockTransactionRepositoryInterface};
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use App\Models\Product;
 
 class StockTransactionService
 {
@@ -32,15 +33,41 @@ class StockTransactionService
     // Dibuat Manajer -> status pending
     public function create(array $data)
     {
-        $data['user_id'] = auth()->id();
-        $data['status'] = 'pending';
-        $data['transaction_date'] ??= now()->toDateString();
-        if ($data['type'] === 'out') $data['supplier_id'] = null;
+        return DB::transaction(function () use ($data) {
+            if ($existing = $this->transactions->findByRequestKey($data['request_key'])) {
+                return $existing;
+            }
 
-        $trx = $this->transactions->create($data);
-        $this->activity->record('create_transaction', "Transaksi {$trx->type} #{$trx->id} dibuat");
+            // Serialize outgoing reservations for this product, including simultaneous submissions.
+            $product = Product::whereKey($data['product_id'])->lockForUpdate()->firstOrFail();
+            // A parallel duplicate may have completed while this request waited for the row lock.
+            if ($existing = $this->transactions->findByRequestKey($data['request_key'])) {
+                return $existing;
+            }
+            if ($data['type'] === 'out') {
+                $available = $product->stock - $this->transactions->pendingOutgoingQuantity($product->id);
+                if ($available < $data['quantity']) {
+                    throw ValidationException::withMessages([
+                        'quantity' => "Stok tersedia untuk diajukan hanya {$available}.",
+                    ]);
+                }
+                $data['supplier_id'] = null;
+            }
 
-        return $trx;
+            $data['user_id'] = auth()->id();
+            $data['status'] = 'pending';
+            $data['transaction_date'] ??= now()->toDateString();
+
+            $trx = $this->transactions->create($data);
+            $this->activity->record('create_transaction', "Transaksi {$trx->type} #{$trx->id} dibuat");
+            return $trx;
+        });
+    }
+
+    public function availableStock(int $productId): int
+    {
+        $product = $this->products->find($productId);
+        return max(0, $product->stock - $this->transactions->pendingOutgoingQuantity($productId));
     }
 
     // Dikonfirmasi Staff -> stok berubah
