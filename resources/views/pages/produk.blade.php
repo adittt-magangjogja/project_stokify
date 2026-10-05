@@ -156,14 +156,15 @@
 
                             <td class="px-6 py-4">Rp {{ number_format((float) $product->selling_price, 0, ',', '.') }}</td>
 
-                            {{-- Catatan: ganti $product->stock jika nama field/atribut stok di backend berbeda --}}
+                            {{-- Stok produk --}}
                             @php
                                 $stock = $product->stock ?? 0;
+                                $formattedStock = number_format($stock);
                             @endphp
 
                             <td class="px-6 py-4 font-semibold
                                 {{ $stock == 0 ? 'text-red-600' : ($stock <= $product->minimum_stock ? 'text-yellow-600' : '') }}">
-                                {{ $stock }}
+                                {{ $formattedStock }}
                             </td>
 
                             <td class="px-6 py-4">

@@ -23,7 +23,7 @@
                 @forelse($lowStockProducts as $product)
                     <a href="{{ route('produk.index') }}" class="block border-b border-slate-100 px-4 py-3 last:border-0 hover:bg-slate-50">
                         <span class="block text-sm font-medium text-slate-800">{{ $product->name }}</span>
-                        <span class="mt-1 block text-xs text-rose-600">Stok {{ $product->stock }} {{ $product->unit }} · minimum {{ $product->minimum_stock }}</span>
+                        <span class="mt-1 block text-xs text-rose-600">Stok {{ rtrim(rtrim(number_format((float) $product->stock, 3, ',', '.'), '0'), ',') }} {{ $product->unit }} · minimum {{ rtrim(rtrim(number_format((float) $product->minimum_stock, 3, ',', '.'), '0'), ',') }}</span>
                     </a>
                 @empty
                     <p class="px-4 py-5 text-sm text-slate-500">Tidak ada produk dengan stok rendah.</p>

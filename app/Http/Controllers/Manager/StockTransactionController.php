@@ -47,7 +47,7 @@ class StockTransactionController extends Controller
         }
         return view($type === 'in' ? 'pages.stok-masuk-create' : 'pages.stok-keluar-create', [
             'products' => $products,
-            'suppliers' => $options['suppliers'],
+            'suppliers' => $options['suppliers']->loadMissing('category'),
             'type' => $type,
         ]);
     }
